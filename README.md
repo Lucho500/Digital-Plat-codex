@@ -44,3 +44,7 @@ The application expects the following variables (typically defined in a `.env` f
 - `VITE_SUPABASE_URL` – URL of your Supabase instance
 - `VITE_SUPABASE_ANON_KEY` – Public anon key for the Supabase project
 
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
