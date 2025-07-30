@@ -5,6 +5,7 @@ import AuthForm from '../components/ui/AuthForm';
 import CompanyForm from '../components/ui/CompanyForm';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import Spinner from '../components/ui/Spinner';
 import { Building2 } from 'lucide-react';
 
 const Auth: React.FC = () => {
@@ -14,7 +15,7 @@ const Auth: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse">Loading...</div>
+        <Spinner size={32} />
       </div>
     );
   }
