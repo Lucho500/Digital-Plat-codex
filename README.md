@@ -35,7 +35,10 @@ The app will be available at `http://localhost:5173` by default.
   ```
   Runs ESLint on the project sources.
 - **Test:**
-  There are currently no automated tests configured, so no test command is provided.
+  ```bash
+  npm test
+  ```
+  Runs the Vitest test suite.
 
 ## Environment variables
 
