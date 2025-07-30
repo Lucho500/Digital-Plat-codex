@@ -55,7 +55,7 @@ const Switch: React.FC<SwitchProps> = ({
       <div className="relative">
         <input
           type="checkbox"
-          className="sr-only"
+          className="sr-only peer"
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
           disabled={disabled}
@@ -66,6 +66,7 @@ const Switch: React.FC<SwitchProps> = ({
             ${checked ? 'bg-primary' : 'bg-gray-200'}
             ${disabled ? 'opacity-50' : ''}
             relative rounded-full transition-colors duration-200 ease-in-out
+            peer-focus-visible:ring-2 peer-focus-visible:ring-primary
           `}
         >
           <div

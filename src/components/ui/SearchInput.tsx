@@ -114,6 +114,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
             absolute top-1/2 transform -translate-y-1/2
             text-gray-400 hover:text-gray-600 transition-colors
             ${size === 'sm' ? 'right-2' : size === 'lg' ? 'right-4' : 'right-3'}
+            focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
           `}
           aria-label="Clear search"
         >

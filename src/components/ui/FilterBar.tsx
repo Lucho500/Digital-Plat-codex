@@ -179,7 +179,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 <span className="text-gray-600 mr-1">{filter.label}:</span>
                 <span className="font-medium">{displayValue}</span>
                 <button
-                  className="ml-2 text-gray-400 hover:text-gray-600"
+                  className="ml-2 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   onClick={() => handleFilterChange(key, null)}
                 >
                   <X size={14} />

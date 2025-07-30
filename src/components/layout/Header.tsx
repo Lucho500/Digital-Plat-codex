@@ -42,9 +42,10 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 h-16 flex items-center px-4 md:px-6">
       <div className="flex items-center md:hidden">
-        <button 
+        <button
           onClick={toggleSidebar}
-          className="p-2 rounded-md text-gray-500 hover:text-primary hover:bg-gray-100"
+          aria-label="Toggle sidebar"
+          className="p-2 rounded-md text-gray-500 hover:text-primary hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <Menu size={20} />
         </button>
@@ -55,22 +56,27 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
         
         <div className="flex items-center space-x-1 md:space-x-4">
           {/* Search button */}
-          <button 
+          <button
             onClick={() => setSearchOpen(!searchOpen)}
-            className="p-2 rounded-md text-gray-500 hover:text-primary hover:bg-gray-100"
+            aria-label="Search"
+            className="p-2 rounded-md text-gray-500 hover:text-primary hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <Search size={20} />
           </button>
           
           {/* Help button */}
-          <button className="p-2 rounded-md text-gray-500 hover:text-primary hover:bg-gray-100">
+          <button
+            className="p-2 rounded-md text-gray-500 hover:text-primary hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            aria-label="Help"
+          >
             <HelpCircle size={20} />
           </button>
           
           {/* Notifications */}
-          <button 
+          <button
             onClick={() => setNotificationsOpen(!notificationsOpen)}
-            className="p-2 rounded-md text-gray-500 hover:text-primary hover:bg-gray-100 relative"
+            aria-label="Notifications"
+            className="p-2 rounded-md text-gray-500 hover:text-primary hover:bg-gray-100 relative focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <Bell size={20} />
             <span className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full"></span>
@@ -78,9 +84,10 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
           
           {/* Profile */}
           <div className="relative">
-            <button 
+            <button
               onClick={() => setProfileOpen(!profileOpen)}
-              className="flex items-center space-x-2 p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100"
+              aria-label="Profile menu"
+              className="flex items-center space-x-2 p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
                 <User size={16} />

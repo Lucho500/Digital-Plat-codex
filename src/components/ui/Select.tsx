@@ -71,6 +71,8 @@ const Select: React.FC<SelectProps> = ({
         `}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
       >
         <div className="flex items-center justify-between">
           <span className={!selectedOption ? 'text-gray-400' : ''}>
@@ -99,6 +101,7 @@ const Select: React.FC<SelectProps> = ({
                       : 'hover:bg-gray-50'
                     }
                     ${option.value === value ? 'bg-primary/5 text-primary' : ''}
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
                   `}
                   onClick={() => {
                     if (!option.disabled) {
