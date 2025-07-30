@@ -31,7 +31,8 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   onClick,
   className = '',
-  type = 'button'
+  type = 'button',
+  ariaLabel
 }) => {
   const getVariantClasses = () => {
     switch (variant) {
