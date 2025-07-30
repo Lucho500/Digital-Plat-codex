@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Charts from '../components/ui/Charts';
@@ -25,6 +26,7 @@ import {
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   // Sample data for cash flow chart
   const cashFlowData = [
     { date: '01/07', inflow: 45000, outflow: 32000, balance: 13000 },
@@ -106,7 +108,7 @@ const Dashboard: React.FC = () => {
               variant="primary"
               className="!rounded-full !p-3 shadow-lg"
               icon={action.icon}
-              onClick={() => window.location.href = action.href}
+              onClick={() => navigate(action.href)}
             />
             <div className="absolute right-full mr-2 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-3 py-1.5 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
               {action.label}
