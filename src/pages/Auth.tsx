@@ -14,7 +14,7 @@ const Auth: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse">Loading...</div>
+        <div className="animate-pulse">Chargement...</div>
       </div>
     );
   }
@@ -34,10 +34,10 @@ const Auth: React.FC = () => {
               <Building2 size={24} className="text-white" />
             </div>
             <h2 className="mt-6 text-3xl font-bold text-gray-900">
-              Set up your company
+              Configurez votre entreprise
             </h2>
             <p className="mt-2 text-sm text-gray-600">
-              Enter your company details to get started
+              Saisissez les informations de votre entreprise pour commencer
             </p>
           </div>
 
@@ -57,12 +57,12 @@ const Auth: React.FC = () => {
             <Building2 size={24} className="text-white" />
           </div>
           <h2 className="mt-6 text-3xl font-bold text-gray-900">
-            {mode === 'signin' ? 'Welcome back' : 'Create your account'}
+            {mode === 'signin' ? 'Ravi de vous revoir' : 'Créez votre compte'}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            {mode === 'signin' 
-              ? 'Sign in to your account to continue' 
-              : 'Get started with your free account'}
+            {mode === 'signin'
+              ? 'Connectez-vous à votre compte pour continuer'
+              : 'Commencez avec votre compte gratuit'}
           </p>
         </div>
 
@@ -71,13 +71,13 @@ const Auth: React.FC = () => {
           
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-600">
-              {mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}
+              {mode === 'signin' ? 'Pas encore de compte ? ' : 'Vous avez d\u00e9j\u00e0 un compte ? '}
               <Button 
                 variant="text" 
                 size="sm" 
                 onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
               >
-                {mode === 'signin' ? 'Sign up' : 'Sign in'}
+                {mode === 'signin' ? "S'inscrire" : 'Se connecter'}
               </Button>
             </p>
           </div>

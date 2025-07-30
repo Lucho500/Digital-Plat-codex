@@ -67,12 +67,12 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            First Name
+            Prénom
           </label>
           <input
             type="text"
             className={`form-input ${errors.user_first_name ? 'border-error' : ''}`}
-            {...register('user_first_name', { required: 'First name is required' })}
+            {...register('user_first_name', { required: 'Le prénom est requis' })}
           />
           {errors.user_first_name && (
             <p className="mt-1 text-sm text-error">{errors.user_first_name.message}</p>
@@ -81,12 +81,12 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Last Name
+            Nom
           </label>
           <input
             type="text"
             className={`form-input ${errors.user_last_name ? 'border-error' : ''}`}
-            {...register('user_last_name', { required: 'Last name is required' })}
+            {...register('user_last_name', { required: 'Le nom est requis' })}
           />
           {errors.user_last_name && (
             <p className="mt-1 text-sm text-error">{errors.user_last_name.message}</p>
@@ -96,12 +96,12 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Company Name
+          Nom de l'entreprise
         </label>
         <input
           type="text"
           className={`form-input ${errors.name ? 'border-error' : ''}`}
-          {...register('name', { required: 'Company name is required' })}
+          {...register('name', { required: "Le nom de l'entreprise est requis" })}
         />
         {errors.name && (
           <p className="mt-1 text-sm text-error">{errors.name.message}</p>
@@ -110,7 +110,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Legal Name
+          Raison sociale
         </label>
         <input
           type="text"
@@ -130,7 +130,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
             {...register('siren', {
               pattern: {
                 value: /^\d{9}$/,
-                message: 'SIREN must be 9 digits'
+                message: 'Le SIREN doit comporter 9 chiffres'
               }
             })}
           />
@@ -141,7 +141,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            VAT Number
+            Numéro de TVA
           </label>
           <input
             type="text"
@@ -153,7 +153,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Address
+          Adresse
         </label>
         <input
           type="text"
@@ -165,7 +165,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="col-span-1">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Postal Code
+            Code postal
           </label>
           <input
             type="text"
@@ -176,7 +176,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
 
         <div className="col-span-1 md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            City
+            Ville
           </label>
           <input
             type="text"
@@ -187,7 +187,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
 
         <div className="col-span-2 md:col-span-1">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Country
+            Pays
           </label>
           <input
             type="text"
@@ -209,7 +209,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
             {...register('email', {
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Invalid email address'
+                message: 'Adresse e-mail invalide'
               }
             })}
           />
@@ -220,7 +220,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Phone
+            Téléphone
           </label>
           <input
             type="tel"
@@ -237,7 +237,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
         disabled={isSubmitting}
         icon={isSubmitting ? <Loader className="animate-spin" size={16} /> : <Building2 size={16} />}
       >
-        {isSubmitting ? 'Creating company...' : 'Create Company'}
+        {isSubmitting ? "Cr\u00e9ation de l'entreprise..." : "Cr\u00e9er l'entreprise"}
       </Button>
     </form>
   );

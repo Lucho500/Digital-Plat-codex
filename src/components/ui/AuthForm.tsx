@@ -47,11 +47,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
             id="email"
             type="email"
             className={`form-input pl-10 ${errors.email ? 'border-error' : ''}`}
-            {...register('email', { 
-              required: 'Email is required',
+              {...register('email', {
+              required: "L'email est requis",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Invalid email address'
+                message: 'Adresse e-mail invalide'
               }
             })}
           />
@@ -64,18 +64,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
 
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-          Password
+          Mot de passe
         </label>
         <div className="relative">
           <input
             id="password"
             type="password"
             className={`form-input pl-10 ${errors.password ? 'border-error' : ''}`}
-            {...register('password', { 
-              required: 'Password is required',
+            {...register('password', {
+              required: 'Le mot de passe est requis',
               minLength: {
                 value: 8,
-                message: 'Password must be at least 8 characters'
+                message: 'Le mot de passe doit contenir au moins 8 caract\u00e8res'
               }
             })}
           />
@@ -93,7 +93,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
         disabled={isSubmitting}
         icon={isSubmitting ? <Loader className="animate-spin" size={16} /> : undefined}
       >
-        {isSubmitting ? 'Processing...' : mode === 'signin' ? 'Sign In' : 'Sign Up'}
+        {isSubmitting ? 'Traitement...' : mode === 'signin' ? 'Se connecter' : "S'inscrire"}
       </Button>
     </form>
   );
