@@ -1,4 +1,3 @@
-```typescript
 import React, { useState, useRef, useEffect } from 'react';
 
 interface PopoverProps {
@@ -101,4 +100,3 @@ const Popover: React.FC<PopoverProps> = ({
 };
 
 export default Popover;
-```
