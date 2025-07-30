@@ -39,19 +39,40 @@ const NotificationCenter: React.FC = () => {
     }
   ]);
 
-  const getIcon = (type: string) => {
+  const getIconLabel = (type: string) => {
     switch (type) {
       case 'info':
-        return <InfoIcon size={18} className="text-primary" />;
+        return 'Information notification';
       case 'success':
-        return <CheckCircle size={18} className="text-success" />;
+        return 'Success notification';
       case 'warning':
-        return <AlertTriangle size={18} className="text-warning" />;
+        return 'Warning notification';
       case 'error':
-        return <AlertTriangle size={18} className="text-error" />;
+        return 'Error notification';
       default:
-        return <InfoIcon size={18} className="text-primary" />;
+        return 'Information notification';
     }
+  };
+
+  const getIcon = (type: string) => {
+    let icon;
+    switch (type) {
+      case 'info':
+        icon = <InfoIcon size={18} className="text-primary" />;
+        break;
+      case 'success':
+        icon = <CheckCircle size={18} className="text-success" />;
+        break;
+      case 'warning':
+        icon = <AlertTriangle size={18} className="text-warning" />;
+        break;
+      case 'error':
+        icon = <AlertTriangle size={18} className="text-error" />;
+        break;
+      default:
+        icon = <InfoIcon size={18} className="text-primary" />;
+    }
+    return <span role="img" aria-label={getIconLabel(type)}>{icon}</span>;
   };
 
   const markAllAsRead = () => {
@@ -111,7 +132,9 @@ const NotificationCenter: React.FC = () => {
             <button
               onClick={() => setIsOpen(false)}
               className="p-1 rounded-full hover:bg-gray-100"
+              aria-label="Close notifications"
             >
+              <span className="sr-only">Close</span>
               <X size={20} />
             </button>
           </div>
@@ -120,7 +143,7 @@ const NotificationCenter: React.FC = () => {
         <div className="overflow-y-auto h-full pb-16">
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-500">
-              <Bell size={48} className="mb-3 opacity-20" />
+              <Bell size={48} className="mb-3 opacity-20" aria-hidden="true" />
               <p>Aucune notification</p>
             </div>
           ) : (
@@ -148,7 +171,9 @@ const NotificationCenter: React.FC = () => {
                           <button
                             onClick={() => deleteNotification(notification.id)}
                             className="ml-2 text-gray-400 hover:text-gray-600"
+                            aria-label="Delete notification"
                           >
+                            <span className="sr-only">Delete</span>
                             <X size={14} />
                           </button>
                         </div>
@@ -169,6 +194,7 @@ const NotificationCenter: React.FC = () => {
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-20 md:bottom-6 right-6 bg-primary text-white rounded-full p-3 shadow-lg hover:bg-primary-light transition-colors z-30"
+          aria-label="Open notifications"
         >
           <Bell size={20} />
           <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent rounded-full flex items-center justify-center text-xs text-white">

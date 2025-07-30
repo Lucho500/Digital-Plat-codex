@@ -39,6 +39,17 @@ const KPICard: React.FC<KPICardProps> = ({
     }
   };
 
+  const getTrendLabel = () => {
+    switch (trend) {
+      case 'up':
+        return 'Increasing';
+      case 'down':
+        return 'Decreasing';
+      default:
+        return '';
+    }
+  };
+
   return (
     <Card className="p-6">
       <h3 className="text-sm font-medium text-gray-500">{title}</h3>
@@ -46,7 +57,9 @@ const KPICard: React.FC<KPICardProps> = ({
         <p className="text-2xl font-semibold text-gray-900">{value}</p>
         {change !== undefined && (
           <p className={`ml-2 flex items-center text-sm ${getTrendColor()}`}>
-            {getTrendIcon()}
+            {getTrendIcon() && (
+              <span role="img" aria-label={getTrendLabel()}>{getTrendIcon()}</span>
+            )}
             <span className="ml-1">{Math.abs(change)}%</span>
           </p>
         )}

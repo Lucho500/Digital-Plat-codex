@@ -18,6 +18,25 @@ const BudgetProgress: React.FC<BudgetProgressProps> = ({
   const remaining = budget - spent;
   const isOverBudget = spent > budget;
 
+  const getStatusIcon = () => {
+    if (isOverBudget) {
+      return {
+        icon: <AlertTriangle size={16} className="text-error mr-1" />,
+        label: 'Over budget',
+      };
+    }
+    if (percentage >= 90) {
+      return {
+        icon: <TrendingUp size={16} className="text-warning mr-1" />,
+        label: 'Nearing budget limit',
+      };
+    }
+    return {
+      icon: <CheckCircle size={16} className="text-success mr-1" />,
+      label: 'Within budget',
+    };
+  };
+
   return (
     <div className="p-4 border border-gray-200 rounded-lg">
       <div className="flex items-center justify-between mb-2">
@@ -37,16 +56,13 @@ const BudgetProgress: React.FC<BudgetProgressProps> = ({
             </span>
           </div>
           <div className="flex items-center">
-            {isOverBudget ? (
-              <AlertTriangle size={16} className="text-error mr-1" />
-            ) : percentage >= 90 ? (
-              <TrendingUp size={16} className="text-warning mr-1" />
-            ) : (
-              <CheckCircle size={16} className="text-success mr-1" />
-            )}
+            {(() => {
+              const { icon, label } = getStatusIcon();
+              return <span role="img" aria-label={label}>{icon}</span>;
+            })()}
             <span className={`text-xs font-semibold inline-block ${
-              isOverBudget ? 'text-error' : 
-              percentage >= 90 ? 'text-warning' : 
+              isOverBudget ? 'text-error' :
+              percentage >= 90 ? 'text-warning' :
               'text-success'
             }`}>
               {percentage.toFixed(1)}%

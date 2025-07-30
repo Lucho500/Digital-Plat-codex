@@ -32,6 +32,19 @@ const Alert: React.FC<AlertProps> = ({
     }
   };
 
+  const getIconLabel = () => {
+    switch (variant) {
+      case 'success':
+        return 'Success alert';
+      case 'warning':
+        return 'Warning alert';
+      case 'error':
+        return 'Error alert';
+      default:
+        return 'Information alert';
+    }
+  };
+
   const getStyles = () => {
     const baseStyles = 'rounded-lg p-4 flex items-start';
     switch (variant) {
@@ -48,7 +61,11 @@ const Alert: React.FC<AlertProps> = ({
 
   return (
     <div className={getStyles()}>
-      <div className="flex-shrink-0 mr-3">{getIcon()}</div>
+      <div className="flex-shrink-0 mr-3">
+        <span role="img" aria-label={getIconLabel()}>
+          {getIcon()}
+        </span>
+      </div>
       <div className="flex-1 min-w-0">
         {title && (
           <h4 className="text-sm font-medium mb-1">{title}</h4>
