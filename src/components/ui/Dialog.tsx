@@ -1,4 +1,3 @@
-```typescript
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import Button from './Button';
@@ -99,4 +98,3 @@ const Dialog: React.FC<DialogProps> = ({
 };
 
 export default Dialog;
-```
