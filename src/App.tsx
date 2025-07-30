@@ -22,7 +22,7 @@ import './styles/globals.css';
 
 const App: React.FC = () => {
   return (
-  <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
     <h1 style={{ textAlign: "center", padding: "20px", color: "black" }}>
       Test Netlify OK
     </h1>
@@ -36,8 +36,7 @@ const App: React.FC = () => {
         </Routes>
       </AuthProvider>
     </Router>
-  </div>
-)
+    </div>
   );
 };
 
