@@ -69,6 +69,7 @@ const Modal: React.FC<ModalProps> = ({
                   size="sm"
                   onClick={onClose}
                   icon={<X size={20} />}
+                  ariaLabel="Close modal"
                 />
               </div>
               <div className="mt-4">{children}</div>

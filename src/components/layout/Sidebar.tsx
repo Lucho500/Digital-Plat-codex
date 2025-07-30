@@ -44,23 +44,24 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle }) => {
         <div className="flex items-center">
           <div className="font-bold text-xl text-white">Forvis Mazars</div>
         </div>
-        <button 
+        <button
           onClick={toggle}
-          className="p-1 rounded-full hover:bg-primary-light md:hidden"
+          aria-label="Toggle sidebar"
+          className="p-1 rounded-full hover:bg-primary-light md:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
         >
           {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
         </button>
       </div>
-      
-      <nav className="mt-6">
+      <nav className="mt-6" aria-label="Main navigation">
         <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.path}>
-              <NavLink 
+              <NavLink
                 to={item.path}
-                className={({ isActive }) => 
-                  `sidebar-item ${isActive ? 'active' : ''}`
+                className={({ isActive }) =>
+                  `sidebar-item ${isActive ? 'active' : ''} focus:outline-none focus-visible:ring-2 focus-visible:ring-gold`
                 }
+                aria-label={item.name}
               >
                 {item.icon}
                 <span>{item.name}</span>
@@ -74,7 +75,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle }) => {
         <div className="p-4 bg-primary-light rounded-lg">
           <h5 className="font-medium text-white mb-2">Besoin d'aide?</h5>
           <p className="text-sm text-white/80">Contactez votre expert Mazars directement depuis l'application.</p>
-          <NavLink to="/expert" className="mt-3 btn btn-accent inline-block text-sm">
+          <NavLink
+            to="/expert"
+            className="mt-3 btn btn-accent inline-block text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            aria-label="Contact my expert"
+          >
             Contacter mon expert
           </NavLink>
         </div>

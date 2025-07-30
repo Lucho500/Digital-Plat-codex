@@ -43,9 +43,15 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <div 
+      <div
         onClick={() => setIsOpen(!isOpen)}
-        className="cursor-pointer"
+        onKeyDown={(e) => e.key === 'Enter' && setIsOpen(!isOpen)}
+        role="button"
+        tabIndex={0}
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        aria-label="Toggle dropdown"
+        className="cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
         {trigger}
       </div>
@@ -65,6 +71,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 className={`
                   w-full text-left px-4 py-2 text-sm hover:bg-gray-50 flex items-center
                   ${value === item.value ? 'text-primary bg-primary/5' : 'text-gray-700'}
+                  focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
                 `}
                 onClick={() => handleSelect(item.value)}
               >
