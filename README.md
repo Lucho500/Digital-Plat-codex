@@ -44,3 +44,19 @@ The application expects the following variables (typically defined in a `.env` f
 - `VITE_SUPABASE_URL` – URL of your Supabase instance
 - `VITE_SUPABASE_ANON_KEY` – Public anon key for the Supabase project
 
+## Supabase Setup
+
+1. Install the Supabase CLI:
+   ```bash
+   npm install -g supabase
+   ```
+2. Apply the database migrations:
+   ```bash
+   supabase db reset
+   ```
+   Or push the migrations without resetting:
+   ```bash
+   supabase db push
+   ```
+   The initial migration file can be found at `supabase/migrations/20250523095722_crimson_glitter.sql`.
+
