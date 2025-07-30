@@ -116,7 +116,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
             ${size === 'sm' ? 'right-2' : size === 'lg' ? 'right-4' : 'right-3'}
             focus:outline-none focus-visible:ring-2 focus-visible:ring-primary
           `}
-          aria-label="Clear search"
+          aria-label="Effacer la recherche"
         >
           <X size={getIconSize()} />
         </button>
