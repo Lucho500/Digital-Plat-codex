@@ -14,7 +14,7 @@ DigitalPlatform V3 is a web application built with [Vite](https://vitejs.dev/), 
    ```bash
    npm install
    ```
-3. Create a `.env` file in the project root and provide the required environment variables (see below).
+3. Copy `.env.example` to `.env` in the project root and provide the required environment variables (see below).
 4. Start the development server:
    ```bash
    npm run dev
@@ -43,4 +43,5 @@ The application expects the following variables (typically defined in a `.env` f
 
 - `VITE_SUPABASE_URL` – URL of your Supabase instance
 - `VITE_SUPABASE_ANON_KEY` – Public anon key for the Supabase project
+A sample `.env.example` file is provided as a starting point. Copy it to `.env` and update the values for your setup.
 
