@@ -30,6 +30,19 @@ const Toast: React.FC<ToastProps> = ({ id, message, type, onClose }) => {
     }
   };
 
+  const getIconLabel = () => {
+    switch (type) {
+      case 'success':
+        return 'Success alert';
+      case 'error':
+        return 'Error alert';
+      case 'warning':
+        return 'Warning alert';
+      case 'info':
+        return 'Information alert';
+    }
+  };
+
   const getStyles = () => {
     const baseStyles = 'flex items-center w-full max-w-xs p-4 mb-4 rounded-lg shadow';
     switch (type) {
@@ -47,7 +60,9 @@ const Toast: React.FC<ToastProps> = ({ id, message, type, onClose }) => {
   return (
     <div className={getStyles()} role="alert">
       <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8">
-        {getIcon()}
+        <span role="img" aria-label={getIconLabel()}>
+          {getIcon()}
+        </span>
       </div>
       <div className="ml-3 text-sm font-normal">{message}</div>
       <button
