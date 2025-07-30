@@ -20,31 +20,22 @@ import SalaryManagement from './pages/SalaryManagement';
 import TaxOnboarding from './pages/TaxOnboarding';
 import './styles/globals.css';
 
-const App: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <h1 style={{ textAlign: "center", padding: "20px", color: "black" }}>
-        Test Netlify OK
-      </h1>
+const App: React.FC = () => (
+  <div className="min-h-screen bg-gray-50">
+    <h1 style={{ textAlign: 'center', padding: '20px', color: 'black' }}>
+      Test Netlify OK
+    </h1>
 
-      <Router>
-        <AuthProvider>
-          <Routes>
-            <Route path="/auth" element={<Auth />} />
-            <Route
-              path="/"
-              element={
-                <Layout>
-                  <Dashboard />
-                </Layout>
-              }
-            />
-            {/* ... les autres routes */}
-          </Routes>
-        </AuthProvider>
-      </Router>
-    </div>
-  );
-};
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/" element={<Layout><Dashboard /></Layout>} />
+          {/* … autres routes */}
+        </Routes>
+      </AuthProvider>
+    </Router>
+  </div>
+);
 
 export default App;
