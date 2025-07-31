@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import Button from './Button';
 import { supabase } from '../../lib/supabase';
 import { Building2, Loader } from 'lucide-react';
+import { useToast } from '../../contexts/ToastContext';
 import type { Database } from '../../lib/database.types';
 
 type CompanyInsert = Database['public']['Tables']['companies']['Insert'];
@@ -20,6 +21,7 @@ interface CompanyFormProps {
 
 const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<CompanyFormData>();
+  const { addToast } = useToast();
 
   const onSubmit = async (data: CompanyFormData) => {
     try {
@@ -56,9 +58,12 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
 
       if (userError) throw userError;
 
+      addToast("Entreprise créée avec succès", 'success');
       onSuccess();
     } catch (error) {
       console.error('Error creating company:', error);
+      const message = (error as Error).message || "Erreur lors de la création de l'entreprise";
+      addToast(message, 'warning');
     }
   };
 
