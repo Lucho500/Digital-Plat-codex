@@ -46,7 +46,7 @@ The application expects the following variables (typically defined in a `.env` f
 
 - `VITE_SUPABASE_URL` – URL of your Supabase instance
 - `VITE_SUPABASE_ANON_KEY` – Public anon key for the Supabase project
-A sample `.env.example` file is provided as a starting point. Copy it to `.env` and update the values for your setup.
+A sample `.env.example` file is provided as a starting point. Copy it to `.env` and update the values for your setup. These variables are also required for the onboarding pages to communicate with Supabase.
 
 ## Supabase Setup
 
@@ -54,7 +54,12 @@ A sample `.env.example` file is provided as a starting point. Copy it to `.env` 
    ```bash
    npm install -g supabase
    ```
-2. Apply the database migrations:
+2. Start the local Supabase stack:
+   ```bash
+   supabase start
+   ```
+   This launches a local Postgres instance and the Supabase API on `http://localhost:54321`.
+3. Apply the database migrations:
    ```bash
    supabase db reset
    ```
@@ -63,4 +68,13 @@ A sample `.env.example` file is provided as a starting point. Copy it to `.env` 
    supabase db push
    ```
    The initial migration file can be found at `supabase/migrations/20250523095722_crimson_glitter.sql`.
+
+## Onboarding Flow
+
+With the development server and Supabase running you can try the onboarding experience:
+
+1. Ensure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are set in your `.env` file.
+2. Navigate to `http://localhost:5173/onboarding/tax` to start the fiscal onboarding wizard.
+
+The onboarding screens rely on the same Supabase connection as the rest of the app.
 
