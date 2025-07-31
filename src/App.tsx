@@ -19,6 +19,7 @@ import Knowledge from './pages/Knowledge';
 import MonthlyClosing from './pages/MonthlyClosing';
 import SalaryManagement from './pages/SalaryManagement';
 import TaxOnboarding from './pages/TaxOnboarding';
+import TaxOnboardingV2 from './pages/TaxOnboardingV2';
 import './styles/globals.css';
 
 const App: React.FC = () => (
@@ -52,7 +53,10 @@ const App: React.FC = () => (
             <Route path="/taxation" element={<Layout><Taxation /></Layout>} />
             <Route path="/expert" element={<Layout><Expert /></Layout>} />
             <Route path="/knowledge" element={<Layout><Knowledge /></Layout>} />
-            <Route path="/onboarding/tax" element={<TaxOnboarding />} />
+            <Route
+              path="/onboarding/tax"
+              element={import.meta.env.VITE_ONBOARDING_V2 === 'true' ? <TaxOnboardingV2 /> : <TaxOnboarding />}
+            />
           </Routes>
         </AuthProvider>
       </ToastProvider>
