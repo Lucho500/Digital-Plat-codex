@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import Button from './Button';
 import { supabase } from '../../lib/supabase';
 import { Mail, Lock, Loader } from 'lucide-react';
+import { useToast } from '../../contexts/ToastContext';
 
 interface AuthFormProps {
   mode: 'signin' | 'signup';
@@ -15,6 +16,7 @@ interface FormData {
 
 const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>();
+  const { addToast } = useToast();
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -30,9 +32,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
           password: data.password,
         });
         if (error) throw error;
+        addToast('Inscription réussie', 'success');
       }
     } catch (error) {
-      console.error('Authentication error:', error);
+      addToast("Message d'erreur", 'error');
     }
   };
 
