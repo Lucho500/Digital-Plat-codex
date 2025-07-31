@@ -78,3 +78,7 @@ With the development server and Supabase running you can try the onboarding expe
 
 The onboarding screens rely on the same Supabase connection as the rest of the app.
 
+### Resume progress
+
+If you close the browser before finishing the onboarding, your answers are stored in `localStorage` (and synced to Supabase when logged in). When you return to `/onboarding/tax`, the app offers to resume from the last saved step.
+

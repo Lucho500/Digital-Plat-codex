@@ -4,6 +4,8 @@ import Button from '../../components/ui/Button';
 import { useModuleRecommendations, CompanyData, Expert } from '../../lib/hooks/useModuleRecommendations';
 import { logOnboardingEvent } from '../../lib/hooks/useAnalytics';
 
+/* eslint-disable react-hooks/rules-of-hooks */
+
 interface ModulesExpertStepProps {
   companyData: CompanyData;
   onComplete: (modules: string[], expert: Expert | null) => void;

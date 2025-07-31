@@ -7,7 +7,10 @@ export async function logOnboardingEvent(
     | 'onboardingCompleted'
     | 'modulesSuggested'
     | 'expertSuggested'
-    | 'modulesSkipped',
+    | 'modulesSkipped'
+    | 'progressSaved'
+    | 'progressResumed'
+    | 'progressDiscarded',
   payload: { stepId: number; userId: string | null }
 ) {
   await supabase.from('analytics_events').insert({
