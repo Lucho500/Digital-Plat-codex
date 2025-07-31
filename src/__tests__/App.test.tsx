@@ -12,10 +12,18 @@ vi.mock('../contexts/AuthContext', () => {
 
 describe('<App />', () => {
   it('renders without crashing', () => {
-    render(
+    const div = document.createElement('div');
+    div.style.width = '1024px';
+    div.style.height = '768px';
+    Object.defineProperty(div, 'offsetWidth', { configurable: true, value: 1024 });
+    Object.defineProperty(div, 'offsetHeight', { configurable: true, value: 768 });
+
+    const { container } = render(
       <ThemeProvider>
         <App />
-      </ThemeProvider>
+      </ThemeProvider>,
+      { container: div }
     );
+    document.body.appendChild(container);
   });
 });
