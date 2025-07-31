@@ -417,6 +417,26 @@ export interface Database {
           timestamp?: string
         }
       }
+      ,experts: {
+        Row: {
+          id: string
+          name: string
+          sectors: string[]
+          rating: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          sectors: string[]
+          rating: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          sectors?: string[]
+          rating?: number
+        }
+      }
     }
   }
 }

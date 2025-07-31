@@ -1,7 +1,13 @@
 import { supabase } from '../supabase';
 
 export async function logOnboardingEvent(
-  event: 'stepStarted' | 'stepCompleted' | 'onboardingCompleted',
+  event:
+    | 'stepStarted'
+    | 'stepCompleted'
+    | 'onboardingCompleted'
+    | 'modulesSuggested'
+    | 'expertSuggested'
+    | 'modulesSkipped',
   payload: { stepId: number; userId: string | null }
 ) {
   await supabase.from('analytics_events').insert({
