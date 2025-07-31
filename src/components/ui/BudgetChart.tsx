@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
@@ -14,11 +13,15 @@ interface BudgetChartProps {
     value: number;
     color: string;
   }[];
+  /** Width of the chart container. Defaults to 400 */
+  width?: number;
+  /** Height of the chart container. Defaults to 300 */
   height?: number;
 }
 
 const BudgetChart: React.FC<BudgetChartProps> = ({
   data,
+  width = 400,
   height = 300
 }) => {
   const renderTooltip = ({ active, payload }: any) => {
@@ -43,34 +46,30 @@ const BudgetChart: React.FC<BudgetChartProps> = ({
   }));
 
   return (
-    <div style={{ width: '100%', height }}>
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie
-            data={dataWithPercentage}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            paddingAngle={5}
-            dataKey="value"
-          >
-            {dataWithPercentage.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} />
-            ))}
-          </Pie>
-          <Tooltip content={renderTooltip} />
-          <Legend
-            verticalAlign="middle"
-            align="right"
-            layout="vertical"
-            formatter={(value: string) => (
-              <span className="text-sm text-gray-700">{value}</span>
-            )}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
+    <PieChart width={width} height={height}>
+      <Pie
+        data={dataWithPercentage}
+        cx="50%"
+        cy="50%"
+        innerRadius={60}
+        outerRadius={80}
+        paddingAngle={5}
+        dataKey="value"
+      >
+        {dataWithPercentage.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={entry.color} />
+        ))}
+      </Pie>
+      <Tooltip content={renderTooltip} />
+      <Legend
+        verticalAlign="middle"
+        align="right"
+        layout="vertical"
+        formatter={(value: string) => (
+          <span className="text-sm text-gray-700">{value}</span>
+        )}
+      />
+    </PieChart>
   );
 };
 

@@ -6,7 +6,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   BarChart,
   Bar,
   LineChart,
@@ -16,6 +15,9 @@ import {
 interface ChartProps {
   type: 'area' | 'bar' | 'line';
   data: any[];
+  /** Width of the chart container. Defaults to 400 */
+  width?: number;
+  /** Height of the chart container. Defaults to 300 */
   height?: number;
   xKey: string;
   yKeys: {
@@ -29,6 +31,7 @@ interface ChartProps {
 const Charts: React.FC<ChartProps> = ({
   type,
   data,
+  width = 400,
   height = 300,
   xKey,
   yKeys,
@@ -55,9 +58,9 @@ const Charts: React.FC<ChartProps> = ({
 
   const renderChart = () => {
     const commonProps = {
-      width: '100%',
-      height: height,
-      data: data,
+      width,
+      height,
+      data,
       margin: { top: 10, right: 30, left: 0, bottom: 0 }
     };
 
@@ -169,13 +172,7 @@ const Charts: React.FC<ChartProps> = ({
     }
   };
 
-  return (
-    <div className="w-full" style={{ height }}>
-      <ResponsiveContainer>
-        {renderChart()}
-      </ResponsiveContainer>
-    </div>
-  );
+  return renderChart();
 };
 
 export default Charts;
