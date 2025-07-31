@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Bell, CheckCircle, AlertTriangle, InfoIcon } from 'lucide-react';
 
 interface Notification {
@@ -12,6 +12,8 @@ interface Notification {
 
 const NotificationCenter: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: '1',
@@ -106,6 +108,27 @@ const NotificationCenter: React.FC = () => {
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (wasOpen.current && !isOpen) {
+      openButtonRef.current?.focus();
+    }
+    wasOpen.current = isOpen;
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && (
@@ -192,6 +215,7 @@ const NotificationCenter: React.FC = () => {
       
       {!isOpen && unreadCount > 0 && (
         <button
+          ref={openButtonRef}
           onClick={() => setIsOpen(true)}
           className="fixed bottom-20 md:bottom-6 right-6 bg-primary text-white rounded-full p-3 shadow-lg hover:bg-primary-light transition-colors z-30"
           aria-label="Open notifications"
