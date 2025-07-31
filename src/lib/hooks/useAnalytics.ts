@@ -11,12 +11,13 @@ export async function logOnboardingEvent(
     | 'progressSaved'
     | 'progressResumed'
     | 'progressDiscarded',
-  payload: { stepId: number; userId: string | null }
+  payload: { stepId?: number; userId?: string | null; [key: string]: any }
 ) {
   await supabase.from('analytics_events').insert({
-    user_id: payload.userId,
-    step_id: payload.stepId,
+    user_id: payload.userId ?? null,
+    step_id: payload.stepId ?? null,
     event,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    ...payload
   });
 }

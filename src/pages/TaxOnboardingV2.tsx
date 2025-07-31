@@ -148,6 +148,7 @@ const TaxOnboarding: React.FC = () => {
   }, []);
 
   const { user } = useAuthContext();
+  const startTimeRef = useRef(Date.now());
 
   useEffect(() => {
     if (user) {
@@ -243,8 +244,12 @@ const TaxOnboarding: React.FC = () => {
     }, 500);
   };
 
-  const completeOnboarding = async () => {
-    await logOnboardingEvent('onboardingCompleted', { stepId: currentStep, userId: user?.id ?? null });
+  const completeOnboarding = async (analytics: { totalTime: number; stepsCompleted: number; skippedSteps: number }) => {
+    await logOnboardingEvent('onboardingCompleted', {
+      stepId: currentStep,
+      userId: user?.id ?? null,
+      ...analytics
+    });
     await clearProgressData();
     if (user) {
       await supabase.from('onboarding_progress').upsert({
@@ -294,8 +299,21 @@ const TaxOnboarding: React.FC = () => {
       saveProgress(next);
       setLoading(false);
     } else {
-      await completeOnboarding();
-      navigate('/');
+      await completeOnboarding({
+        totalTime: Date.now() - startTimeRef.current,
+        stepsCompleted: onboardingSteps.length,
+        skippedSteps: 0
+      });
+      navigate('/onboarding/success', {
+        state: {
+          name: legalName || 'Utilisateur',
+          modules: selectedModules,
+          expert: experts.find(e => e.id === selectedExpert) || null,
+          totalTime: Date.now() - startTimeRef.current,
+          stepsCompleted: onboardingSteps.length,
+          skippedSteps: 0
+        }
+      });
     }
   };
 
@@ -616,8 +634,21 @@ const TaxOnboarding: React.FC = () => {
                 icon={<ArrowRight size={20} />}
                 iconPosition="right"
                 onClick={async () => {
-                  await completeOnboarding();
-                  navigate('/');
+                  await completeOnboarding({
+                    totalTime: Date.now() - startTimeRef.current,
+                    stepsCompleted: onboardingSteps.length,
+                    skippedSteps: 0
+                  });
+                  navigate('/onboarding/success', {
+                    state: {
+                      name: legalName || 'Utilisateur',
+                      modules: selectedModules,
+                      expert: experts.find(e => e.id === selectedExpert) || null,
+                      totalTime: Date.now() - startTimeRef.current,
+                      stepsCompleted: onboardingSteps.length,
+                      skippedSteps: 0
+                    }
+                  });
                 }}
               >
                 Accéder à mon tableau de bord

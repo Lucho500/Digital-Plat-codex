@@ -82,3 +82,7 @@ The onboarding screens rely on the same Supabase connection as the rest of the a
 
 If you close the browser before finishing the onboarding, your answers are stored in `localStorage` (and synced to Supabase when logged in). When you return to `/onboarding/tax`, the app offers to resume from the last saved step.
 
+
+## Success screens
+
+The premium onboarding flow ends with `OnboardingSuccess`. This screen summarizes the modules enabled and the assigned expert, then prompts the user with a single primary action: **Accéder au tableau de bord**. The CTA receives focus automatically to comply with accessibility guidelines.
