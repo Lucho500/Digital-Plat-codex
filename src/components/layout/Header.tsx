@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useTheme } from '../../contexts/ThemeContext';
 import { useLocation } from 'react-router-dom';
 import { 
-  Menu, 
-  Bell, 
-  Search, 
-  HelpCircle, 
+  Menu,
+  Bell,
+  Search,
+  HelpCircle,
+  Sun,
+  Moon,
   User,
   ChevronDown
 } from 'lucide-react';
@@ -18,6 +21,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   
   // Get page title based on current route
   const getPageTitle = () => {
@@ -70,6 +74,15 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
             aria-label="Help"
           >
             <HelpCircle size={20} />
+          </button>
+
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="p-2 rounded-md text-gray-500 hover:text-primary hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           
           {/* Notifications */}
