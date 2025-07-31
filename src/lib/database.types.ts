@@ -394,6 +394,29 @@ export interface Database {
           updated_at?: string
         }
       }
+      analytics_events: {
+        Row: {
+          id: string
+          user_id: string | null
+          step_id: number | null
+          event: string | null
+          timestamp: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          step_id?: number | null
+          event?: string | null
+          timestamp?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          step_id?: number | null
+          event?: string | null
+          timestamp?: string
+        }
+      }
     }
   }
 }

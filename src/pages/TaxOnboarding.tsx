@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../contexts/AuthContext';
+import { logOnboardingEvent } from '../lib/hooks/useAnalytics';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import ProgressSteps from '../components/ui/ProgressSteps';
@@ -125,12 +127,20 @@ const TaxOnboarding: React.FC = () => {
   const [selectedExpert, setSelectedExpert] = useState('');
   
   // Initialize with recommended modules
-  React.useEffect(() => {
+  useEffect(() => {
     const recommended = modules
       .filter(module => module.recommended)
       .map(module => module.id);
     setSelectedModules(recommended);
   }, []);
+
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    if (user) {
+      logOnboardingEvent('stepStarted', { stepId: currentStep, userId: user.id });
+    }
+  }, [currentStep, user]);
 
   // Toggle module selection
   const toggleModule = (moduleId: string) => {
@@ -142,23 +152,16 @@ const TaxOnboarding: React.FC = () => {
   };
 
   // Handle next step
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     if (currentStep < 5) {
       setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        setCurrentStep(currentStep + 1);
-        
-        // Update steps as completed
-        const updatedSteps = onboardingSteps.map(step => 
-          step.id === currentStep ? { ...step, completed: true } : step
-        );
-        
-        // Update progress
-        setProgress((currentStep / onboardingSteps.length) * 100);
-      }, 1000);
+      await logOnboardingEvent('stepCompleted', { stepId: currentStep, userId: user?.id ?? null });
+      setCurrentStep(currentStep + 1);
+
+      setProgress((currentStep / onboardingSteps.length) * 100);
+      setLoading(false);
     } else {
-      // Final step - redirect to dashboard
+      await logOnboardingEvent('onboardingCompleted', { stepId: currentStep, userId: user?.id ?? null });
       navigate('/');
     }
   };
@@ -246,22 +249,24 @@ const TaxOnboarding: React.FC = () => {
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-500 mb-1">
+                  <label htmlFor="legal-name" className="block text-sm text-gray-500 mb-1">
                     Raison sociale
                   </label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <input
+                    id="legal-name"
+                    type="text"
+                    className="form-input"
                     placeholder="Votre entreprise"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-500 mb-1">
+                  <label htmlFor="siren" className="block text-sm text-gray-500 mb-1">
                     SIREN
                   </label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <input
+                    id="siren"
+                    type="text"
+                    className="form-input"
                     placeholder="123 456 789"
                   />
                 </div>
@@ -269,33 +274,37 @@ const TaxOnboarding: React.FC = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
                 Adresse du siège social
               </label>
-              <input 
-                type="text" 
-                className="form-input mb-3" 
+              <input
+                id="address"
+                type="text"
+                className="form-input mb-3"
                 placeholder="Adresse"
               />
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="col-span-1">
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <input
+                    id="postal-code"
+                    type="text"
+                    className="form-input"
                     placeholder="Code postal"
                   />
                 </div>
                 <div className="col-span-1 md:col-span-2">
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <input
+                    id="city"
+                    type="text"
+                    className="form-input"
                     placeholder="Ville"
                   />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <input
+                    id="country"
+                    type="text"
+                    className="form-input"
                     placeholder="Pays"
                     defaultValue="France"
                   />
@@ -354,11 +363,12 @@ const TaxOnboarding: React.FC = () => {
             </div>
             
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="activity-desc" className="block text-sm font-medium text-gray-700 mb-2">
                 Description de votre activité
               </label>
-              <textarea 
-                className="form-input h-24" 
+              <textarea
+                id="activity-desc"
+                className="form-input h-24"
                 placeholder="Décrivez brièvement votre activité..."
               ></textarea>
               <p className="text-xs text-gray-500 mt-1">
