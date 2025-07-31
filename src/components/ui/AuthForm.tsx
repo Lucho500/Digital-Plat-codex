@@ -26,6 +26,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
           password: data.password,
         });
         if (error) throw error;
+        addToast('Connexion réussie', 'success');
       } else {
         const { error } = await supabase.auth.signUp({
           email: data.email,
