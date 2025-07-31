@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { ToastProvider } from './contexts/ToastContext';
 import Layout from './components/layout/Layout';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
@@ -27,13 +28,15 @@ const App: React.FC = () => (
     </h1>
 
     <Router>
-      <AuthProvider>
-        <Routes>
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/" element={<Layout><Dashboard /></Layout>} />
-          {/* … autres routes */}
-        </Routes>
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <Routes>
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/" element={<Layout><Dashboard /></Layout>} />
+            {/* … autres routes */}
+          </Routes>
+        </AuthProvider>
+      </ToastProvider>
     </Router>
   </div>
 );

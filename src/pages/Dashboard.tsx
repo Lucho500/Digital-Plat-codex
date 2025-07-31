@@ -4,6 +4,7 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Charts from '../components/ui/Charts';
 import MaxAssistant from '../components/ui/MaxAssistant';
+import { useToast } from '../contexts/ToastContext';
 import { 
   Wallet,
   TrendingUp,
@@ -27,6 +28,7 @@ import {
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { addToast } = useToast();
   // Sample data for cash flow chart
   const cashFlowData = [
     { date: '01/07', inflow: 45000, outflow: 32000, balance: 13000 },
@@ -100,6 +102,14 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="animate-slide-in-up">
+      <div className="mb-4">
+        <Button
+          variant="secondary"
+          onClick={() => addToast('Exemple de toast', 'success')}
+        >
+          Tester les toasts
+        </Button>
+      </div>
       {/* Floating Quick Actions Menu */}
       <div className="fixed top-24 right-6 z-40 space-y-2">
         {quickActions.map((action, index) => (
