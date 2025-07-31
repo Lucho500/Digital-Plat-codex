@@ -36,7 +36,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
         addToast('Inscription réussie', 'success');
       }
     } catch (error) {
-      addToast("Message d'erreur", 'error');
+      const message = (error as Error).message || "Erreur lors de l'authentification";
+      addToast(message, 'error');
     }
   };
 

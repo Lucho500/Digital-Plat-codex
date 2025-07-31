@@ -7,7 +7,6 @@ import type { Database } from '../../lib/database.types';
 import { useToast } from '../../contexts/ToastContext';
 
 type CompanyInsert = Database['public']['Tables']['companies']['Insert'];
-type UserUpdate = Database['public']['Tables']['users']['Update'];
 
 interface CompanyFormData extends Omit<CompanyInsert, 'id' | 'created_at' | 'updated_at'> {
   user_first_name: string;
@@ -61,7 +60,8 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ userId, onSuccess }) => {
       onSuccess();
       addToast('Entreprise créée avec succès', 'success');
     } catch (error) {
-      addToast("Message d'erreur", 'error');
+      const message = (error as Error).message || "Erreur lors de la création";
+      addToast(message, 'error');
     }
   };
 
