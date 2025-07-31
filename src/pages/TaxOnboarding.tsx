@@ -153,7 +153,6 @@ const TaxOnboarding: React.FC = () => {
         const updatedSteps = onboardingSteps.map(step => 
           step.id === currentStep ? { ...step, completed: true } : step
         );
-        console.log('Updated steps:', updatedSteps);
         
         // Update progress
         setProgress((currentStep / onboardingSteps.length) * 100);

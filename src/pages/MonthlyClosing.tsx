@@ -129,7 +129,6 @@ const MonthlyClosing: React.FC = () => {
         );
         
         // Update steps (in a real app, you would dispatch this to your state management)
-        console.log('Updated steps:', updatedSteps);
       }, 1500);
     } else {
       // Final step - redirect to dashboard with success message
