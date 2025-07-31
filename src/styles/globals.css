@@ -18,8 +18,16 @@
     --color-border: 226 232 240; /* #E2E8F0 */
   }
 
+  .dark {
+    --color-background: 30 41 59; /* #1E293B */
+    --color-text: 226 232 240; /* #E2E8F0 */
+    --color-text-muted: 148 163 184; /* #94A3B8 */
+    --color-border: 71 85 105; /* #475569 */
+  }
+
   body {
     @apply bg-white text-slate-800 font-sans antialiased;
+    @apply dark:bg-slate-900 dark:text-slate-100;
   }
 
   h1, h2, h3, h4, h5, h6 {

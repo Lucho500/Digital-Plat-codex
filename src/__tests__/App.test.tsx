@@ -1,15 +1,21 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import App from '../App';
+import { ThemeProvider } from '../contexts/ThemeContext';
 
 // Mock AuthProvider to avoid Supabase calls
+import ReactImport from 'react';
+
 vi.mock('../contexts/AuthContext', () => {
-  const React = require('react');
-  return { AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</> };
+  return { AuthProvider: ({ children }: { children: ReactImport.ReactNode }) => <>{children}</> };
 });
 
 describe('<App />', () => {
   it('renders without crashing', () => {
-    render(<App />);
+    render(
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    );
   });
 });
