@@ -18,6 +18,8 @@ const MaxAssistant: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -26,6 +28,20 @@ const MaxAssistant: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
 
   // Simulate initial greeting with personality
   useEffect(() => {
@@ -43,6 +59,13 @@ const MaxAssistant: React.FC = () => {
         setIsTyping(false);
       }, 1000);
     }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (wasOpen.current && !isOpen) {
+      openButtonRef.current?.focus();
+    }
+    wasOpen.current = isOpen;
   }, [isOpen]);
 
   const handleSend = () => {
@@ -106,6 +129,7 @@ const MaxAssistant: React.FC = () => {
       {/* Floating button with animation */}
       {!isOpen && (
         <button
+          ref={openButtonRef}
           onClick={() => setIsOpen(true)}
           className="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg hover:bg-primary-light transition-all duration-300 z-50 group animate-bounce hover:animate-none"
         >
