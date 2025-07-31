@@ -417,6 +417,29 @@ export interface Database {
           timestamp?: string
         }
       }
+      ,onboarding_progress: {
+        Row: {
+          user_id: string
+          current_step: number
+          form_data: Json
+          completed: boolean
+          updated_at: string | null
+        }
+        Insert: {
+          user_id: string
+          current_step?: number
+          form_data: Json
+          completed?: boolean
+          updated_at?: string | null
+        }
+        Update: {
+          user_id?: string
+          current_step?: number
+          form_data?: Json
+          completed?: boolean
+          updated_at?: string | null
+        }
+      }
       ,experts: {
         Row: {
           id: string

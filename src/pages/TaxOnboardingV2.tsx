@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../contexts/AuthContext';
 import { logOnboardingEvent } from '../lib/hooks/useAnalytics';
@@ -6,6 +6,8 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import ProgressSteps from '../components/ui/ProgressSteps';
 import CompanyActivityStep from '../flows/onboarding/CompanyActivityStep';
+import Modal from '../components/ui/Modal';
+import { supabase } from '../lib/supabase';
 import { fetchSirene } from '../lib/api/sirene';
 import { 
   FileCheck, 
@@ -120,6 +122,9 @@ const TaxOnboarding: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [resumeModal, setResumeModal] = useState(false);
+  const [savedProgress, setSavedProgress] = useState<{ currentStep: number; formData: any } | null>(null);
+  const saveTimer = useRef<NodeJS.Timeout | null>(null);
   
   // Form state
   const [companySize, setCompanySize] = useState('');
@@ -150,6 +155,35 @@ const TaxOnboarding: React.FC = () => {
     }
   }, [currentStep, user]);
 
+  useEffect(() => {
+    async function loadProgress() {
+      let progressData: { currentStep: number; formData: any } | null = null;
+      const local = localStorage.getItem('taxOnboardingV2');
+      if (local) {
+        try {
+          progressData = JSON.parse(local);
+        } catch {
+          /* ignore */
+        }
+      }
+      if (user) {
+        const { data } = await supabase
+          .from('onboarding_progress')
+          .select('current_step, form_data, completed')
+          .eq('user_id', user.id)
+          .single();
+        if (data && !data.completed) {
+          progressData = { currentStep: data.current_step, formData: data.form_data };
+        }
+      }
+      if (progressData) {
+        setSavedProgress(progressData);
+        setResumeModal(true);
+      }
+    }
+    loadProgress();
+  }, [user]);
+
   // Toggle module selection
   const toggleModule = (moduleId: string) => {
     if (selectedModules.includes(moduleId)) {
@@ -173,17 +207,94 @@ const TaxOnboarding: React.FC = () => {
     }
   };
 
+  const clearProgressData = async () => {
+    localStorage.removeItem('taxOnboardingV2');
+    if (user) {
+      await supabase.from('onboarding_progress').delete().eq('user_id', user.id);
+    }
+  };
+
+  const saveProgress = (step: number) => {
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    const formData = {
+      companySize,
+      sector,
+      selectedModules,
+      selectedExpert,
+      legalName,
+      siren,
+      address,
+      postalCode,
+      city,
+      activityDesc,
+      taxRegime
+    };
+    saveTimer.current = setTimeout(async () => {
+      localStorage.setItem('taxOnboardingV2', JSON.stringify({ currentStep: step, formData }));
+      await logOnboardingEvent('progressSaved', { stepId: step, userId: user?.id ?? null });
+      if (user) {
+        await supabase.from('onboarding_progress').upsert({
+          user_id: user.id,
+          current_step: step,
+          form_data: formData,
+          completed: false
+        });
+      }
+    }, 500);
+  };
+
+  const completeOnboarding = async () => {
+    await logOnboardingEvent('onboardingCompleted', { stepId: currentStep, userId: user?.id ?? null });
+    await clearProgressData();
+    if (user) {
+      await supabase.from('onboarding_progress').upsert({
+        user_id: user.id,
+        current_step: currentStep,
+        form_data: {},
+        completed: true
+      });
+    }
+  };
+
+  const resumeProgress = () => {
+    if (!savedProgress) return;
+    const data = savedProgress.formData || {};
+    setCurrentStep(savedProgress.currentStep);
+    setCompanySize(data.companySize || '');
+    setSector(data.sector || '');
+    setSelectedModules(data.selectedModules || []);
+    setSelectedExpert(data.selectedExpert || '');
+    setLegalName(data.legalName || '');
+    setSiren(data.siren || '');
+    setAddress(data.address || '');
+    setPostalCode(data.postalCode || '');
+    setCity(data.city || '');
+    setActivityDesc(data.activityDesc || '');
+    setTaxRegime(data.taxRegime || 'is');
+    setResumeModal(false);
+    logOnboardingEvent('progressResumed', { stepId: savedProgress.currentStep, userId: user?.id ?? null });
+  };
+
+  const discardProgress = async () => {
+    await clearProgressData();
+    setResumeModal(false);
+    if (savedProgress) {
+      await logOnboardingEvent('progressDiscarded', { stepId: savedProgress.currentStep, userId: user?.id ?? null });
+    }
+  };
+
   // Handle next step
   const handleNextStep = async () => {
     if (currentStep < onboardingSteps.length) {
       setLoading(true);
       await logOnboardingEvent('stepCompleted', { stepId: currentStep, userId: user?.id ?? null });
-      setCurrentStep(currentStep + 1);
-
+      const next = currentStep + 1;
+      setCurrentStep(next);
       setProgress((currentStep / onboardingSteps.length) * 100);
+      saveProgress(next);
       setLoading(false);
     } else {
-      await logOnboardingEvent('onboardingCompleted', { stepId: currentStep, userId: user?.id ?? null });
+      await completeOnboarding();
       navigate('/');
     }
   };
@@ -499,12 +610,15 @@ const TaxOnboarding: React.FC = () => {
                 </div>
               </div>
               
-              <Button 
-                variant="primary" 
+              <Button
+                variant="primary"
                 size="lg"
                 icon={<ArrowRight size={20} />}
                 iconPosition="right"
-                onClick={() => navigate('/')}
+                onClick={async () => {
+                  await completeOnboarding();
+                  navigate('/');
+                }}
               >
                 Accéder à mon tableau de bord
               </Button>
@@ -512,6 +626,19 @@ const TaxOnboarding: React.FC = () => {
           </Card>
         </div>
       )}
+      <Modal
+        isOpen={resumeModal}
+        onClose={discardProgress}
+        title="Reprendre l'onboarding"
+        footer={
+          <div className="flex justify-end space-x-2">
+            <Button variant="secondary" onClick={discardProgress}>Non</Button>
+            <Button variant="primary" onClick={resumeProgress}>Oui</Button>
+          </div>
+        }
+      >
+        <p className="text-sm text-gray-600">Souhaitez-vous reprendre là où vous vous êtes arrêté ?</p>
+      </Modal>
     </div>
   );
 };
