@@ -7,7 +7,10 @@ import { ThemeProvider } from '../contexts/ThemeContext';
 import ReactImport from 'react';
 
 vi.mock('../contexts/AuthContext', () => {
-  return { AuthProvider: ({ children }: { children: ReactImport.ReactNode }) => <>{children}</> };
+  return {
+    AuthProvider: ({ children }: { children: ReactImport.ReactNode }) => <>{children}</>,
+    useAuthContext: () => ({ user: null, company: null, loading: false })
+  };
 });
 
 describe('<App />', () => {
