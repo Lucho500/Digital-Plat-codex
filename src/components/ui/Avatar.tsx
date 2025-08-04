@@ -63,6 +63,7 @@ const Avatar: React.FC<AvatarProps> = ({
             src={src}
             alt={alt || 'Avatar'}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
         ) : (
           getFallbackContent()

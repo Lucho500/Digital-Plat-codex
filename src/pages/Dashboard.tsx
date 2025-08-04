@@ -6,6 +6,7 @@ import Charts from '../components/ui/Charts';
 import MaxAssistant from '../components/ui/MaxAssistant';
 import { useToast } from '../contexts/ToastContext';
 import SuggestedModulesWidget from '../components/widgets/SuggestedModulesWidget';
+import ExpertContactWidget from '../components/widgets/ExpertContactWidget';
 import { useAuthContext } from '../contexts/AuthContext';
 import { 
   Wallet,
@@ -493,6 +494,7 @@ const Dashboard: React.FC = () => {
         </Card>
       </div>
         <SuggestedModulesWidget accountId={company?.id || ''} />
+        <ExpertContactWidget accountId={company?.id || ''} />
 
         {/* Max Assistant */}
         <MaxAssistant />

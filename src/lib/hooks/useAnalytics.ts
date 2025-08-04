@@ -57,3 +57,16 @@ export async function logTrialEvent(
     details
   });
 }
+
+export async function logAdvisoryEvent(
+  event: 'expertWidgetViewed' | 'expertPlanCallClicked' | 'expertMessageClicked',
+  payload: { accountId?: string | null; expertId?: string; [key: string]: any }
+) {
+  const { accountId, ...details } = payload;
+  await supabase.from('analytics_events').insert({
+    account_id: accountId ?? null,
+    event,
+    timestamp: new Date().toISOString(),
+    details
+  });
+}
