@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import { useFeatureFlag } from '../../lib/hooks/useFeatureFlag';
@@ -13,16 +13,34 @@ interface Props {
 const SuggestedModulesWidget: React.FC<Props> = ({ accountId }) => {
   const { enabled } = useFeatureFlag('upsellRecoV1');
   const { modules, isLoading } = useSuggestedModules(accountId);
+  const variant = useMemo(() => (Math.random() < 0.5 ? 'bundle' : 'module'), []);
+
+  const items = useMemo(() => {
+    const mapped = modules?.map((m) => suggestedModules[m.moduleId]).filter(Boolean) || [];
+    if (variant === 'bundle' && mapped.length > 0) {
+      const bundleId = `${mapped[0].id}-bundle`;
+      const bundle = suggestedModules[bundleId];
+      if (bundle) {
+        return [bundle, ...mapped.slice(1)];
+      }
+    }
+    return mapped;
+  }, [modules, variant]);
 
   useEffect(() => {
-    if (modules && modules.length > 0) {
+    if (items && items.length > 0) {
       const position = window.innerWidth < 768 ? 'mobile' : 'desktop';
       void logRecoEvent('recoWidgetViewed', {
-        moduleIds: modules.map((m) => m.moduleId),
-        position
+        moduleIds: items.map((m) => m.id),
+        position,
+        variant
       });
     }
-  }, [modules]);
+  }, [items, variant]);
+
+  useEffect(() => {
+    void logRecoEvent('bundleExperimentAssigned', { variant });
+  }, [variant]);
 
   if (!enabled) return null;
 
@@ -35,8 +53,6 @@ const SuggestedModulesWidget: React.FC<Props> = ({ accountId }) => {
       </div>
     );
   }
-
-  const items = modules?.map((m) => suggestedModules[m.moduleId]).filter(Boolean) || [];
 
   if (items.length === 0) {
     return (
@@ -81,7 +97,8 @@ const SuggestedModulesWidget: React.FC<Props> = ({ accountId }) => {
                   const position = window.innerWidth < 768 ? 'mobile' : 'desktop';
                   void logRecoEvent('recoWidgetClicked', {
                     moduleId: item.id,
-                    position
+                    position,
+                    variant
                   });
                   window.alert('Try & Buy');
                 }}

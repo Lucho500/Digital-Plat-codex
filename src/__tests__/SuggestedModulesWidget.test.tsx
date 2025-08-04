@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import SuggestedModulesWidget from '../components/widgets/SuggestedModulesWidget';
 
 vi.mock('../lib/hooks/useFeatureFlag', () => ({
@@ -13,6 +13,7 @@ vi.mock('../lib/hooks/useAnalytics', () => ({
 
 describe('SuggestedModulesWidget', () => {
   beforeEach(() => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.9);
     vi.stubGlobal('fetch', vi.fn(() =>
       Promise.resolve({
         json: () =>
@@ -23,6 +24,10 @@ describe('SuggestedModulesWidget', () => {
           ])
       }) as any
     ));
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('affiche les cartes modules', async () => {
