@@ -24,6 +24,7 @@ import OnboardingSuccess from './pages/OnboardingSuccess';
 import OnboardingStart from './pages/OnboardingStart';
 import QrUploadPage from './pages/QrUploadPage';
 import FeatureFlagsPage from './pages/admin/FeatureFlagsPage';
+import KpiQrPage from './pages/admin/kpi-qr';
 import { useFeatureFlag } from './lib/hooks/useFeatureFlag';
 import { Navigate } from 'react-router-dom';
 import './styles/globals.css';
@@ -74,6 +75,7 @@ const App: React.FC = () => (
             <Route path="/onboarding/start" element={<OnboardingStart />} />
             <Route path="/qr-upload/:sessionToken" element={<QrUploadRoute />} />
             <Route path="/admin/feature-flags" element={<Layout><FeatureFlagsPage /></Layout>} />
+            <Route path="/admin/kpi-qr" element={<Layout><KpiQrPage /></Layout>} />
           </Routes>
         </AuthProvider>
       </ToastProvider>
