@@ -18,3 +18,6 @@
 - Created `ocr-service` microservice and cleanup script for temporary storage.
 - Implemented OCR autofill with validation drawer and mismatch detection.
 - Added runtime `onboardingQR` feature flag with admin dashboard and SWR hook.
+
+## [Analytics]
+- Added real-time QR onboarding KPI dashboard with `/admin/kpi-qr` page and `get_qr_kpi` RPC.
