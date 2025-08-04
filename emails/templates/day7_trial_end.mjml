@@ -1,0 +1,10 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text>Votre essai gratuit se termine dans 24h.</mj-text>
+        <mj-button href="https://app.example.com/billing?source=upsell_day7">Choisir une offre</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

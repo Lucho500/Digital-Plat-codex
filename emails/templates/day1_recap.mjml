@@ -1,0 +1,10 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text>Vous avez déjà traité {{invoices}} factures. Découvrez le module recommandé {{module}}.</mj-text>
+        <mj-button href="https://app.example.com/dashboard?source=upsell_day1">Voir le widget</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

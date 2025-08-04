@@ -1,0 +1,10 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text>Découvrez de nouveaux modules qui pourraient vous intéresser.</mj-text>
+        <mj-button href="https://app.example.com/modules?source=upsell_day7">Voir les recommandations</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
