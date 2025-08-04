@@ -440,6 +440,26 @@ export interface Database {
           updated_at?: string | null
         }
       }
+      ,ocr_sessions: {
+        Row: {
+          session_id: string
+          user_id: string
+          created_at: string
+          expires_at: string
+        }
+        Insert: {
+          session_id: string
+          user_id: string
+          created_at?: string
+          expires_at: string
+        }
+        Update: {
+          session_id?: string
+          user_id?: string
+          created_at?: string
+          expires_at?: string
+        }
+      }
       ,experts: {
         Row: {
           id: string
