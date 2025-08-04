@@ -3,6 +3,7 @@ export interface SireneData {
   address: string;
   postalCode: string;
   city: string;
+  siren: string;
 }
 
 export async function fetchSirene(siren: string): Promise<SireneData> {
@@ -18,6 +19,7 @@ export async function fetchSirene(siren: string): Promise<SireneData> {
     legalName: etab?.unite_legale?.denomination || '',
     address: etab?.geo_adresse || '',
     postalCode: etab?.code_postal || '',
-    city: etab?.libelle_commune || ''
+    city: etab?.libelle_commune || '',
+    siren: etab?.siren || ''
   };
 }

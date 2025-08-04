@@ -16,3 +16,4 @@
 - Added OCR parsing pipeline with `/api/ocr/parse` endpoint and realtime updates.
 - New `useOcrUpdates` hook pre-fills company form after mobile upload.
 - Created `ocr-service` microservice and cleanup script for temporary storage.
+- Implemented OCR autofill with validation drawer and mismatch detection.
