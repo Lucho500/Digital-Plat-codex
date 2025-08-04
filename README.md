@@ -86,3 +86,9 @@ If you close the browser before finishing the onboarding, your answers are store
 ## Success screens
 
 The premium onboarding flow ends with `OnboardingSuccess`. This screen summarizes the modules enabled and the assigned expert, then prompts the user with a single primary action: **Accéder au tableau de bord**. The CTA receives focus automatically to comply with accessibility guidelines.
+
+## Feature flags
+
+The "Onboarding QR Express" flow is controlled by the `onboardingQR` feature flag stored in Supabase. Check its status in React components via `useFeatureFlag('onboardingQR')`; results are cached for 5 minutes with SWR.
+
+Admins and product owners can toggle flags and export CSV logs from `/admin/feature-flags`.

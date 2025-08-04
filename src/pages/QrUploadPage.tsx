@@ -1,20 +1,24 @@
 import React, { useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import { useSessionValidation } from '../lib/hooks/useSessionValidation';
 import { useFileUpload } from '../lib/hooks/useFileUpload';
+import { useFeatureFlag } from '../lib/hooks/useFeatureFlag';
 
 const QrUploadPage: React.FC = () => {
   const { sessionToken = '' } = useParams();
   const status = useSessionValidation(sessionToken);
   const { file, previewUrl, progress, error, selectFile, upload } = useFileUpload();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { enabled, loading } = useFeatureFlag('onboardingQR');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (f) selectFile(f);
   };
 
+  if (loading) return <p className="p-4">Chargement...</p>;
+  if (!enabled) return <Navigate to="/onboarding/tax" />;
   if (status === 'loading') return <p className="p-4">Validation...</p>;
   if (status === 'invalid')
     return <p className="p-4">QR expiré, régénérez depuis votre ordinateur</p>;

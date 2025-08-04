@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../contexts/AuthContext';
+import { useFeatureFlag } from '../lib/hooks/useFeatureFlag';
 import { logOnboardingEvent } from '../lib/hooks/useAnalytics';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -139,7 +140,7 @@ const TaxOnboarding: React.FC = () => {
   const [activityDesc, setActivityDesc] = useState('');
   const [taxRegime, setTaxRegime] = useState('is');
 
-  const qrEnabled = import.meta.env.VITE_ONBOARDING_QR === 'true';
+  const { enabled: qrEnabled } = useFeatureFlag('onboardingQR');
   const sessionId =
     qrEnabled && typeof window !== 'undefined'
       ? localStorage.getItem('ocrSessionId')

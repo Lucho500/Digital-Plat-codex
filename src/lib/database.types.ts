@@ -9,6 +9,52 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      feature_flags: {
+        Row: {
+          id: string
+          is_enabled: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          id: string
+          is_enabled?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          id?: string
+          is_enabled?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+      }
+      feature_flag_logs: {
+        Row: {
+          id: number
+          flag_id: string
+          old_value: boolean | null
+          new_value: boolean | null
+          user_id: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: number
+          flag_id: string
+          old_value?: boolean | null
+          new_value?: boolean | null
+          user_id?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: number
+          flag_id?: string
+          old_value?: boolean | null
+          new_value?: boolean | null
+          user_id?: string | null
+          created_at?: string
+        }
+      }
       companies: {
         Row: {
           id: string
