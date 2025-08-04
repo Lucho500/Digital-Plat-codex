@@ -538,6 +538,67 @@ export interface Database {
           current_load?: number
         }
       }
+      ,specialists: {
+        Row: {
+          id: string
+          name: string
+          sectors: string[]
+          languages: string[]
+          rating: number
+          max_load: number
+          current_load: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          sectors: string[]
+          languages: string[]
+          rating: number
+          max_load?: number
+          current_load?: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          sectors?: string[]
+          languages?: string[]
+          rating?: number
+          max_load?: number
+          current_load?: number
+        }
+      }
+      ,advisory_sessions: {
+        Row: {
+          id: string
+          account_id: string
+          expert_id: string
+          specialist_id: string
+          status: string
+          created_at: string
+          start_at: string | null
+          meeting_url: string | null
+        }
+        Insert: {
+          id?: string
+          account_id: string
+          expert_id: string
+          specialist_id: string
+          status?: string
+          created_at?: string
+          start_at?: string | null
+          meeting_url?: string | null
+        }
+        Update: {
+          id?: string
+          account_id?: string
+          expert_id?: string
+          specialist_id?: string
+          status?: string
+          created_at?: string
+          start_at?: string | null
+          meeting_url?: string | null
+        }
+      }
     }
   }
 }
