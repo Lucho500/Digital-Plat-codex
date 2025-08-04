@@ -25,6 +25,7 @@ export interface CompanyActivityProps {
   onAutoFill: () => void;
   activitySectors: { id: string; label: string }[];
   companySizes: { id: string; label: string; description: string; icon: React.ReactNode }[];
+  highlight?: boolean;
 }
 
 const CompanyActivityStep: React.FC<CompanyActivityProps> = ({
@@ -48,9 +49,10 @@ const CompanyActivityStep: React.FC<CompanyActivityProps> = ({
   setTaxRegime,
   onAutoFill,
   activitySectors,
-  companySizes
+  companySizes,
+  highlight = false
 }) => (
-  <div className="space-y-6">
+  <div className={`space-y-6 ${highlight ? 'animate-pulse' : ''}`}>
     <Card>
       <h3 className="text-lg font-medium text-gray-900 mb-6">Informations sur votre entreprise</h3>
 

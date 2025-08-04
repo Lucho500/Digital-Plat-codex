@@ -446,18 +446,24 @@ export interface Database {
           user_id: string
           created_at: string
           expires_at: string
+          parsed_data: Json | null
+          parsed_at: string | null
         }
         Insert: {
           session_id: string
           user_id: string
           created_at?: string
           expires_at: string
+          parsed_data?: Json | null
+          parsed_at?: string | null
         }
         Update: {
           session_id?: string
           user_id?: string
           created_at?: string
           expires_at?: string
+          parsed_data?: Json | null
+          parsed_at?: string | null
         }
       }
       ,experts: {
