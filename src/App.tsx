@@ -23,7 +23,17 @@ import TaxOnboardingV2 from './pages/TaxOnboardingV2';
 import OnboardingSuccess from './pages/OnboardingSuccess';
 import OnboardingStart from './pages/OnboardingStart';
 import QrUploadPage from './pages/QrUploadPage';
+import FeatureFlagsPage from './pages/admin/FeatureFlagsPage';
+import { useFeatureFlag } from './lib/hooks/useFeatureFlag';
+import { Navigate } from 'react-router-dom';
 import './styles/globals.css';
+
+const QrUploadRoute: React.FC = () => {
+  const { enabled, loading } = useFeatureFlag('onboardingQR');
+  if (loading) return <p>Chargement...</p>;
+  if (!enabled) return <Navigate to="/onboarding/tax" />;
+  return <QrUploadPage />;
+};
 
 const App: React.FC = () => (
   <div className="min-h-screen bg-gray-50">
@@ -62,9 +72,8 @@ const App: React.FC = () => (
             />
             <Route path="/onboarding/success" element={<OnboardingSuccess />} />
             <Route path="/onboarding/start" element={<OnboardingStart />} />
-            {import.meta.env.VITE_ONBOARDING_QR === 'true' && (
-              <Route path="/qr-upload/:sessionToken" element={<QrUploadPage />} />
-            )}
+            <Route path="/qr-upload/:sessionToken" element={<QrUploadRoute />} />
+            <Route path="/admin/feature-flags" element={<Layout><FeatureFlagsPage /></Layout>} />
           </Routes>
         </AuthProvider>
       </ToastProvider>

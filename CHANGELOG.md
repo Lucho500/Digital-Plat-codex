@@ -17,3 +17,4 @@
 - New `useOcrUpdates` hook pre-fills company form after mobile upload.
 - Created `ocr-service` microservice and cleanup script for temporary storage.
 - Implemented OCR autofill with validation drawer and mismatch detection.
+- Added runtime `onboardingQR` feature flag with admin dashboard and SWR hook.
