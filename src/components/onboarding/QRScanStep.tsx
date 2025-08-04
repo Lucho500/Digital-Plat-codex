@@ -27,6 +27,9 @@ const QRScanStep: React.FC = () => {
     setSessionId(id);
     setExpiresAt(exp);
     setTimeLeft(QR_DURATION);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ocrSessionId', id);
+    }
     const createdAt = new Date(now).toISOString();
     const expiresAtStr = new Date(exp).toISOString();
     await supabase.from('ocr_sessions').insert({

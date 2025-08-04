@@ -13,3 +13,6 @@
 - Added mobile `QrUploadPage` with secure document upload and progress tracking.
 - Implemented hooks `useSessionValidation` and `useFileUpload` with analytics events.
 - Introduced Fastify route `/api/ocr/upload` and temporary `ocr-temp` storage bucket.
+- Added OCR parsing pipeline with `/api/ocr/parse` endpoint and realtime updates.
+- New `useOcrUpdates` hook pre-fills company form after mobile upload.
+- Created `ocr-service` microservice and cleanup script for temporary storage.

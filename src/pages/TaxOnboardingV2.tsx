@@ -9,6 +9,7 @@ import CompanyActivityStep from '../flows/onboarding/CompanyActivityStep';
 import Modal from '../components/ui/Modal';
 import { supabase } from '../lib/supabase';
 import { fetchSirene } from '../lib/api/sirene';
+import { useOcrUpdates } from '../lib/hooks/useOcrUpdates';
 import { 
   FileCheck, 
   Building2, 
@@ -138,6 +139,22 @@ const TaxOnboarding: React.FC = () => {
   const [city, setCity] = useState('');
   const [activityDesc, setActivityDesc] = useState('');
   const [taxRegime, setTaxRegime] = useState('is');
+
+  const qrEnabled = import.meta.env.VITE_ONBOARDING_QR === 'true';
+  const sessionId =
+    qrEnabled && typeof window !== 'undefined'
+      ? localStorage.getItem('ocrSessionId')
+      : null;
+  const { data: ocrData, highlight } = useOcrUpdates(sessionId);
+
+  useEffect(() => {
+    if (ocrData) {
+      setLegalName(ocrData.name);
+      setSiren(ocrData.siren);
+      setAddress(ocrData.address);
+      setSector(ocrData.sector);
+    }
+  }, [ocrData]);
   
   // Initialize with recommended modules
   useEffect(() => {
@@ -374,6 +391,7 @@ const TaxOnboarding: React.FC = () => {
             activitySectors={activitySectors}
             companySizes={companySizes}
             onAutoFill={handleAutoFill}
+            highlight={highlight}
           />
           <div className="flex justify-end mt-6">
             <Button
