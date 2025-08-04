@@ -40,3 +40,20 @@ export async function logRecoEvent(
     details
   });
 }
+
+export async function logTrialEvent(
+  event:
+    | 'trialStarted'
+    | 'trialCancelled'
+    | 'trialConverted'
+    | 'trialReminderEmailOpened',
+  payload: { accountId?: string | null; [key: string]: any }
+) {
+  const { accountId, ...details } = payload;
+  await supabase.from('analytics_events').insert({
+    account_id: accountId ?? null,
+    event,
+    timestamp: new Date().toISOString(),
+    details
+  });
+}
