@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { Check } from 'lucide-react';
+import { useOcrUpdates } from '../../lib/hooks/useOcrUpdates';
+import OcrValidationDrawer, { ValidationField } from './OcrValidationDrawer';
+import { fetchSirene } from '../../lib/api/sirene';
+import { supabase } from '../../lib/supabase';
 
 export interface CompanyActivityProps {
   companySize: string;
@@ -25,7 +29,8 @@ export interface CompanyActivityProps {
   onAutoFill: () => void;
   activitySectors: { id: string; label: string }[];
   companySizes: { id: string; label: string; description: string; icon: React.ReactNode }[];
-  highlight?: boolean;
+  sessionId?: string | null;
+  onAllConfirmedChange?: (v: boolean) => void;
 }
 
 const CompanyActivityStep: React.FC<CompanyActivityProps> = ({
@@ -50,11 +55,139 @@ const CompanyActivityStep: React.FC<CompanyActivityProps> = ({
   onAutoFill,
   activitySectors,
   companySizes,
-  highlight = false
-}) => (
-  <div className={`space-y-6 ${highlight ? 'animate-pulse' : ''}`}>
-    <Card>
-      <h3 className="text-lg font-medium text-gray-900 mb-6">Informations sur votre entreprise</h3>
+  sessionId = null,
+  onAllConfirmedChange
+}) => {
+  const { data: ocrData } = useOcrUpdates(sessionId);
+  const [fieldConfirmed, setFieldConfirmed] = useState({
+    legalName: true,
+    siren: true,
+    address: true,
+    sector: true
+  });
+  const [originalValues, setOriginalValues] = useState<Record<string, string>>({});
+  const [highlights, setHighlights] = useState<Record<string, boolean>>({});
+  const [mismatch, setMismatch] = useState(false);
+
+  useEffect(() => {
+    if (!ocrData) return;
+    const fields = {
+      legalName: ocrData.name,
+      siren: ocrData.siren,
+      address: ocrData.address,
+      sector: ocrData.sector
+    };
+    setLegalName(fields.legalName);
+    setSiren(fields.siren);
+    setAddress(fields.address);
+    setSector(fields.sector);
+    setOriginalValues(fields);
+    setFieldConfirmed({ legalName: false, siren: false, address: false, sector: false });
+    Object.keys(fields).forEach((k) => {
+      setHighlights((h) => ({ ...h, [k]: true }));
+      setTimeout(() => setHighlights((h) => ({ ...h, [k]: false })), 1000);
+    });
+    supabase.from('analytics_events').insert({
+      event: 'ocrAutofillShown',
+      session_id: sessionId,
+      timestamp: new Date().toISOString()
+    });
+    fetchSirene(fields.siren)
+      .then((res) => {
+        if (res.siren && res.siren !== fields.siren) {
+          setMismatch(true);
+          supabase.from('analytics_events').insert({
+            event: 'ocrMismatch',
+            field: 'siren',
+            ocr_value: fields.siren,
+            api_value: res.siren,
+            timestamp: new Date().toISOString()
+          });
+        } else {
+          setMismatch(false);
+        }
+      })
+      .catch(() => {
+        /* ignore */
+      });
+  }, [ocrData]);
+
+  useEffect(() => {
+    const allConfirmed = Object.values(fieldConfirmed).every(Boolean);
+    onAllConfirmedChange?.(allConfirmed);
+    if (allConfirmed && Object.keys(originalValues).length > 0) {
+      const corrections = Object.keys(originalValues).filter((k) => {
+        const current: Record<string, string> = {
+          legalName,
+          siren,
+          address,
+          sector
+        };
+        return originalValues[k] !== current[k];
+      }).length;
+      supabase.from('analytics_events').insert({
+        event: 'ocrDataConfirmed',
+        fieldsConfirmedCount: Object.keys(originalValues).length,
+        correctionsCount: corrections,
+        timestamp: new Date().toISOString()
+      });
+    }
+  }, [fieldConfirmed]);
+
+  const confirmField = (key: keyof typeof fieldConfirmed) => {
+    setFieldConfirmed((s) => ({ ...s, [key]: true }));
+    const current: Record<string, string> = { legalName, siren, address, sector };
+    if (originalValues[key] !== current[key]) {
+      supabase.from('analytics_events').insert({
+        event: 'ocrFieldCorrected',
+        field: key,
+        original: originalValues[key],
+        corrected: current[key],
+        timestamp: new Date().toISOString()
+      });
+    }
+  };
+
+  const editField = (key: keyof typeof fieldConfirmed) => {
+    setFieldConfirmed((s) => ({ ...s, [key]: false }));
+    const ids: Record<string, string> = {
+      legalName: 'legal-name',
+      siren: 'siren',
+      address: 'address',
+      sector: 'sector-options'
+    };
+    const el = document.getElementById(ids[key]);
+    el?.focus();
+  };
+
+  const validationFields: ValidationField[] = Object.keys(originalValues).map((k) => ({
+    key: k,
+    label:
+      k === 'legalName'
+        ? 'Raison sociale'
+        : k === 'siren'
+          ? 'SIREN'
+          : k === 'address'
+            ? 'Adresse'
+            : 'Secteur',
+    value:
+      k === 'sector'
+        ? activitySectors.find((s) => s.id === sector)?.label || ''
+        : ( { legalName, siren, address } as any )[k],
+    confirmed: fieldConfirmed[k as keyof typeof fieldConfirmed]
+  }));
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        {mismatch && (
+          <div className="bg-red-100 text-red-700 p-2 mb-4">
+            Incohérence détectée – merci de corriger
+          </div>
+        )}
+        <h3 className="text-lg font-medium text-gray-900 mb-6">
+          Informations sur votre entreprise
+        </h3>
 
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -96,7 +229,7 @@ const CompanyActivityStep: React.FC<CompanyActivityProps> = ({
             <input
               id="legal-name"
               type="text"
-              className="form-input"
+              className={`form-input ${highlights.legalName ? 'animate-pulse' : ''}`}
               value={legalName}
               onChange={e => setLegalName(e.target.value)}
             />
@@ -109,7 +242,7 @@ const CompanyActivityStep: React.FC<CompanyActivityProps> = ({
               <input
                 id="siren"
                 type="text"
-                className="form-input flex-1"
+                className={`form-input flex-1 ${highlights.siren ? 'animate-pulse' : ''}`}
                 value={siren}
                 onChange={e => setSiren(e.target.value)}
               />
@@ -128,7 +261,7 @@ const CompanyActivityStep: React.FC<CompanyActivityProps> = ({
         <input
           id="address"
           type="text"
-          className="form-input mb-3"
+          className={`form-input mb-3 ${highlights.address ? 'animate-pulse' : ''}`}
           value={address}
           onChange={e => setAddress(e.target.value)}
         />
@@ -159,7 +292,7 @@ const CompanyActivityStep: React.FC<CompanyActivityProps> = ({
 
       <div className="mt-8">
         <label className="block text-sm font-medium text-gray-700 mb-2">Secteur d'activité principal</label>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div id="sector-options" tabIndex={-1} className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${highlights.sector ? 'animate-pulse' : ''}`}> 
           {activitySectors.map(sectorItem => (
             <div
               key={sectorItem.id}
@@ -237,7 +370,13 @@ const CompanyActivityStep: React.FC<CompanyActivityProps> = ({
         </div>
       </div>
     </Card>
+    <OcrValidationDrawer
+      fields={validationFields}
+      onConfirm={(k) => confirmField(k as keyof typeof fieldConfirmed)}
+      onEdit={(k) => editField(k as keyof typeof fieldConfirmed)}
+    />
   </div>
-);
+  );
+};
 
 export default CompanyActivityStep;

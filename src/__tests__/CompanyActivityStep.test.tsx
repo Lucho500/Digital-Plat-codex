@@ -3,6 +3,12 @@ import React from 'react';
 import CompanyActivityStep from '../flows/onboarding/CompanyActivityStep';
 import { describe, it, expect, vi } from 'vitest';
 
+vi.mock('../lib/hooks/useOcrUpdates', () => ({
+  useOcrUpdates: () => ({
+    data: { name: 'ACME', siren: '123456789', address: '1 rue', sector: 'retail' }
+  })
+}));
+
 const sizes = [
   { id: 'micro', label: 'Micro-entreprise', description: '', icon: <div /> },
   { id: 'pme', label: 'PME', description: '', icon: <div /> }
@@ -39,6 +45,8 @@ describe('<CompanyActivityStep />', () => {
         onAutoFill={vi.fn()}
         activitySectors={sectors}
         companySizes={sizes}
+        sessionId={null}
+        onAllConfirmedChange={vi.fn()}
       />
     );
     fireEvent.click(screen.getAllByText('Micro-entreprise')[0]);
@@ -70,9 +78,49 @@ describe('<CompanyActivityStep />', () => {
         onAutoFill={onAutoFill}
         activitySectors={sectors}
         companySizes={sizes}
+        sessionId={null}
+        onAllConfirmedChange={vi.fn()}
       />
     );
     fireEvent.click(screen.getByRole('button', { name: /Auto-remplir/i }));
     expect(onAutoFill).toHaveBeenCalled();
+  });
+
+  it('injects OCR data into fields', () => {
+    const setLegalName = vi.fn();
+    const setSiren = vi.fn();
+    const setAddress = vi.fn();
+    const setSector = vi.fn();
+    render(
+      <CompanyActivityStep
+        companySize="micro"
+        setCompanySize={vi.fn()}
+        sector=""
+        setSector={setSector}
+        legalName=""
+        setLegalName={setLegalName}
+        siren=""
+        setSiren={setSiren}
+        address=""
+        setAddress={setAddress}
+        postalCode=""
+        setPostalCode={vi.fn()}
+        city=""
+        setCity={vi.fn()}
+        activityDesc=""
+        setActivityDesc={vi.fn()}
+        taxRegime="is"
+        setTaxRegime={vi.fn()}
+        onAutoFill={vi.fn()}
+        activitySectors={sectors}
+        companySizes={sizes}
+        sessionId="abc"
+        onAllConfirmedChange={vi.fn()}
+      />
+    );
+    expect(setLegalName).toHaveBeenCalledWith('ACME');
+    expect(setSiren).toHaveBeenCalledWith('123456789');
+    expect(setAddress).toHaveBeenCalledWith('1 rue');
+    expect(setSector).toHaveBeenCalledWith('retail');
   });
 });

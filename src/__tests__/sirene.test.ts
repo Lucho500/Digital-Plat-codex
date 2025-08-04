@@ -8,7 +8,8 @@ describe('fetchSirene', () => {
         unite_legale: { denomination: 'Test SA' },
         geo_adresse: '1 rue de la Paix',
         code_postal: '75000',
-        libelle_commune: 'Paris'
+        libelle_commune: 'Paris',
+        siren: '123456789'
       }
     };
 
@@ -22,7 +23,8 @@ describe('fetchSirene', () => {
       legalName: 'Test SA',
       address: '1 rue de la Paix',
       postalCode: '75000',
-      city: 'Paris'
+      city: 'Paris',
+      siren: '123456789'
     });
   });
 });
