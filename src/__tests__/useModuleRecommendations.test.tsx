@@ -20,6 +20,10 @@ vi.mock('../lib/supabase', () => {
   };
 });
 
+vi.mock('../lib/hooks/useFeatureFlag', () => ({
+  useFeatureFlag: () => ({ enabled: false, loading: false, error: null })
+}));
+
 describe('useModuleRecommendations', () => {
   it('returns modules and expert', async () => {
     const { result } = renderHook(() =>

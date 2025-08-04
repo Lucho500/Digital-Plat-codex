@@ -92,3 +92,17 @@ The premium onboarding flow ends with `OnboardingSuccess`. This screen summarize
 The "Onboarding QR Express" flow is controlled by the `onboardingQR` feature flag stored in Supabase. Check its status in React components via `useFeatureFlag('onboardingQR')`; results are cached for 5 minutes with SWR.
 
 Admins and product owners can toggle flags and export CSV logs from `/admin/feature-flags`.
+
+## Recommendation model
+
+The hybrid recommendation engine combines a simple rules mapping with a light logistic model.
+
+### How to retrain
+
+1. Export anonymised usage statistics to `database/usage_stats.json`.
+2. Run the training script:
+   ```bash
+   npm run train:reco
+   ```
+   It writes refreshed weights to `src/reco/weights.ts`.
+3. Deploy the server with `TFJS_BACKEND=wasm` to use the WebAssembly backend.
