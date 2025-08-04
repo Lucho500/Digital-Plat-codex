@@ -5,6 +5,8 @@ import Button from '../components/ui/Button';
 import Charts from '../components/ui/Charts';
 import MaxAssistant from '../components/ui/MaxAssistant';
 import { useToast } from '../contexts/ToastContext';
+import SuggestedModulesWidget from '../components/widgets/SuggestedModulesWidget';
+import { useAuthContext } from '../contexts/AuthContext';
 import { 
   Wallet,
   TrendingUp,
@@ -29,6 +31,7 @@ import {
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
+  const { company } = useAuthContext();
   // Sample data for cash flow chart
   const cashFlowData = [
     { date: '01/07', inflow: 45000, outflow: 32000, balance: 13000 },
@@ -489,11 +492,12 @@ const Dashboard: React.FC = () => {
           </div>
         </Card>
       </div>
+        <SuggestedModulesWidget accountId={company?.id || ''} />
 
-      {/* Max Assistant */}
-      <MaxAssistant />
-    </div>
-  );
-};
+        {/* Max Assistant */}
+        <MaxAssistant />
+      </div>
+    );
+  };
 
 export default Dashboard;

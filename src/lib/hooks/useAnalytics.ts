@@ -24,7 +24,12 @@ export async function logOnboardingEvent(
 }
 
 export async function logRecoEvent(
-  event: 'recoServed' | 'recoClicked' | 'recoActivated',
+  event:
+    | 'recoServed'
+    | 'recoClicked'
+    | 'recoActivated'
+    | 'recoWidgetViewed'
+    | 'recoWidgetClicked',
   payload: { userId?: string | null; [key: string]: any }
 ) {
   const { userId, ...details } = payload;
