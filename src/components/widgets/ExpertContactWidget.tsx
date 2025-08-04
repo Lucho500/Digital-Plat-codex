@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ExpertContactWidget: React.FC<Props> = ({ accountId }) => {
-  const { enabled } = useFeatureFlag('advisoryV1');
+  const { enabled } = useFeatureFlag('advisoryPaymentsV1');
   const { expert, isLoading } = useExpertDetails(accountId);
   const [open, setOpen] = useState(false);
 

@@ -599,6 +599,29 @@ export interface Database {
           meeting_url?: string | null
         }
       }
+      ,advisor_slots: {
+        Row: {
+          id: string
+          advisor_id: string
+          start_at: string
+          end_at: string
+          is_booked: boolean
+        }
+        Insert: {
+          id?: string
+          advisor_id: string
+          start_at: string
+          end_at: string
+          is_booked?: boolean
+        }
+        Update: {
+          id?: string
+          advisor_id?: string
+          start_at?: string
+          end_at?: string
+          is_booked?: boolean
+        }
+      }
     }
   }
 }
