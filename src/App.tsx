@@ -22,6 +22,7 @@ import TaxOnboarding from './pages/TaxOnboarding';
 import TaxOnboardingV2 from './pages/TaxOnboardingV2';
 import OnboardingSuccess from './pages/OnboardingSuccess';
 import OnboardingStart from './pages/OnboardingStart';
+import QrUploadPage from './pages/QrUploadPage';
 import './styles/globals.css';
 
 const App: React.FC = () => (
@@ -61,6 +62,9 @@ const App: React.FC = () => (
             />
             <Route path="/onboarding/success" element={<OnboardingSuccess />} />
             <Route path="/onboarding/start" element={<OnboardingStart />} />
+            {import.meta.env.VITE_ONBOARDING_QR === 'true' && (
+              <Route path="/qr-upload/:sessionToken" element={<QrUploadPage />} />
+            )}
           </Routes>
         </AuthProvider>
       </ToastProvider>

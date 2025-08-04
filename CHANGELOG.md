@@ -8,3 +8,8 @@
 ## [Onboarding QR]
 - Added `QRScanStep` component generating time-limited QR codes for document upload.
 - Introduced `onboardingQR` feature flag and Supabase `ocr_sessions` tracking.
+
+## [Onboarding QR Express]
+- Added mobile `QrUploadPage` with secure document upload and progress tracking.
+- Implemented hooks `useSessionValidation` and `useFileUpload` with analytics events.
+- Introduced Fastify route `/api/ocr/upload` and temporary `ocr-temp` storage bucket.
