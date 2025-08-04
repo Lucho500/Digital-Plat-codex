@@ -518,18 +518,24 @@ export interface Database {
           name: string
           sectors: string[]
           rating: number
+          max_load: number
+          current_load: number
         }
         Insert: {
           id?: string
           name: string
           sectors: string[]
           rating: number
+          max_load?: number
+          current_load?: number
         }
         Update: {
           id?: string
           name?: string
           sectors?: string[]
           rating?: number
+          max_load?: number
+          current_load?: number
         }
       }
     }
