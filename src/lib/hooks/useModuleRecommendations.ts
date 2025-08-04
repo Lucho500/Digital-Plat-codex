@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../supabase';
 import type { Database } from '../database.types';
 import moduleMapping from '../../config/module-mapping';
+import { useFeatureFlag } from './useFeatureFlag';
 
 export interface CompanyData {
   sector: string;
@@ -10,10 +11,65 @@ export interface CompanyData {
 
 export type Expert = Database['public']['Tables']['experts']['Row'];
 
-export function useModuleRecommendations(companyData: CompanyData) {
-  const [expert, setExpert] = useState<Expert | null>(null);
+interface Options {
+  accountId?: string;
+  invoiceVolume?: number;
+  sessions7d?: number;
+}
 
-  const modules = moduleMapping[companyData.sector] || [];
+export function useModuleRecommendations(
+  companyData: CompanyData,
+  opts: Options = {}
+) {
+  const { enabled } = useFeatureFlag('upsellRecoV1');
+  const [expert, setExpert] = useState<Expert | null>(null);
+  const [modules, setModules] = useState<string[]>(
+    moduleMapping[companyData.sector] || []
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (enabled) {
+      const params = new URLSearchParams({
+        accountId: opts.accountId || '',
+        sector: companyData.sector,
+        size: companyData.size,
+        invoiceVolume: String(opts.invoiceVolume ?? 0),
+        sessions7d: String(opts.sessions7d ?? 0)
+      });
+
+      fetch(`/api/reco/modules?${params.toString()}`, {
+        headers: {
+          Authorization: `Bearer ${btoa(JSON.stringify({ role: 'user' }))}`
+        }
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          if (!cancelled) {
+            setModules(data.map((d: any) => d.moduleId));
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            setModules(moduleMapping[companyData.sector] || []);
+          }
+        });
+    } else {
+      setModules(moduleMapping[companyData.sector] || []);
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    companyData.sector,
+    companyData.size,
+    enabled,
+    opts.accountId,
+    opts.invoiceVolume,
+    opts.sessions7d
+  ]);
 
   useEffect(() => {
     let cancelled = false;

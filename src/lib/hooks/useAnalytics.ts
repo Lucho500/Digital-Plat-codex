@@ -13,11 +13,25 @@ export async function logOnboardingEvent(
     | 'progressDiscarded',
   payload: { stepId?: number; userId?: string | null; [key: string]: any }
 ) {
+  const { stepId, userId, ...rest } = payload;
   await supabase.from('analytics_events').insert({
-    user_id: payload.userId ?? null,
-    step_id: payload.stepId ?? null,
+    user_id: userId ?? null,
+    step_id: stepId ?? null,
     event,
     timestamp: new Date().toISOString(),
-    ...payload
+    details: rest
+  });
+}
+
+export async function logRecoEvent(
+  event: 'recoServed' | 'recoClicked' | 'recoActivated',
+  payload: { userId?: string | null; [key: string]: any }
+) {
+  const { userId, ...details } = payload;
+  await supabase.from('analytics_events').insert({
+    user_id: userId ?? null,
+    event,
+    timestamp: new Date().toISOString(),
+    details
   });
 }
