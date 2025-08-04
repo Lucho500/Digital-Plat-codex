@@ -21,6 +21,7 @@ import SalaryManagement from './pages/SalaryManagement';
 import TaxOnboarding from './pages/TaxOnboarding';
 import TaxOnboardingV2 from './pages/TaxOnboardingV2';
 import OnboardingSuccess from './pages/OnboardingSuccess';
+import OnboardingStart from './pages/OnboardingStart';
 import './styles/globals.css';
 
 const App: React.FC = () => (
@@ -59,6 +60,7 @@ const App: React.FC = () => (
               element={import.meta.env.VITE_ONBOARDING_V2 === 'true' ? <TaxOnboardingV2 /> : <TaxOnboarding />}
             />
             <Route path="/onboarding/success" element={<OnboardingSuccess />} />
+            <Route path="/onboarding/start" element={<OnboardingStart />} />
           </Routes>
         </AuthProvider>
       </ToastProvider>

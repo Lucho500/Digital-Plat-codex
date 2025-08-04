@@ -5,6 +5,7 @@ interface ImportMetaEnv {
   readonly VITE_SUPABASE_ANON_KEY: string
   readonly VITE_SIRENE_API_TOKEN: string
   readonly VITE_ONBOARDING_V2: string
+  readonly VITE_ONBOARDING_QR: string
 }
 
 interface ImportMeta {
