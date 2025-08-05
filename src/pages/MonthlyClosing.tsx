@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import ProgressSteps from '../components/ui/ProgressSteps';
-import { 
+import {
   CheckCircle, 
   FileCheck, 
   AlertTriangle, 
@@ -15,6 +15,8 @@ import {
   UserCog,
   Loader
 } from 'lucide-react';
+import { useToast } from '../contexts/ToastContext';
+import { useClosingTasks } from '../lib/hooks/useClosingTasks';
 
 // Define the steps for the monthly closing process
 const closingSteps = [
@@ -36,6 +38,9 @@ const MonthlyClosing: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(2);
   const [loading, setLoading] = useState(false);
+  const { addToast } = useToast();
+
+  const { data: fetchedTasks } = useClosingTasks('demo', '2023-06');
   
   // Sample tasks for the monthly closing checklist
   const [tasks, setTasks] = useState<Task[]>([
@@ -80,10 +85,17 @@ const MonthlyClosing: React.FC = () => {
     }
   ]);
 
+  useEffect(() => {
+    if (fetchedTasks) {
+      setTasks(fetchedTasks as Task[]);
+    }
+  }, [fetchedTasks]);
+
   const updateTaskStatus = (taskId: string, newStatus: Task['status']) => {
-    setTasks(tasks.map(task => 
+    setTasks(tasks.map(task =>
       task.id === taskId ? { ...task, status: newStatus } : task
     ));
+    addToast('Statut de la tâche mis à jour', 'success');
   };
 
   const getTaskStatusIcon = (status: Task['status']) => {
