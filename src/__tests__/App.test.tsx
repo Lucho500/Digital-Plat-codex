@@ -13,6 +13,12 @@ vi.mock('../contexts/AuthContext', () => {
   };
 });
 
+vi.mock('../lib/hooks/useFeatureFlag', () => {
+  return {
+    useFeatureFlag: () => ({ enabled: false, loading: false, error: null })
+  };
+});
+
 describe('<App />', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
