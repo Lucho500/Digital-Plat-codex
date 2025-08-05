@@ -622,7 +622,7 @@ export interface Database {
           is_booked?: boolean
         }
       }
-      ,ai_entry_queue: {
+      ai_entry_queue: {
         Row: {
           id: string
           suggestion: Json
@@ -654,7 +654,7 @@ export interface Database {
           reviewed_at?: string | null
         }
       }
-      ,relance_profiles: {
+      relance_profiles: {
         Row: {
           id: string
           name: string
