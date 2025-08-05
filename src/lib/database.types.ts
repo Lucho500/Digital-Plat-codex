@@ -622,6 +622,70 @@ export interface Database {
           is_booked?: boolean
         }
       }
+      ,closing_task_templates: {
+        Row: {
+          id: string
+          code: string
+          label: string
+          section: string
+          freq: Database['public']['Enums']['closing_task_freq']
+          legal_ref: string | null
+          default_due: number
+        }
+        Insert: {
+          id?: string
+          code: string
+          label: string
+          section: string
+          freq: Database['public']['Enums']['closing_task_freq']
+          legal_ref?: string | null
+          default_due: number
+        }
+        Update: {
+          id?: string
+          code?: string
+          label?: string
+          section?: string
+          freq?: Database['public']['Enums']['closing_task_freq']
+          legal_ref?: string | null
+          default_due?: number
+        }
+      }
+      ,closing_tasks: {
+        Row: {
+          id: string
+          account_id: string
+          template_id: string
+          period: string
+          responsible_id: string | null
+          due_date: string
+          status: Database['public']['Enums']['closing_task_status']
+          attachment_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          account_id: string
+          template_id: string
+          period: string
+          responsible_id?: string | null
+          due_date: string
+          status?: Database['public']['Enums']['closing_task_status']
+          attachment_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          account_id?: string
+          template_id?: string
+          period?: string
+          responsible_id?: string | null
+          due_date?: string
+          status?: Database['public']['Enums']['closing_task_status']
+          attachment_url?: string | null
+          updated_at?: string
+        }
+      }
       ,relance_profiles: {
         Row: {
           id: string
@@ -650,7 +714,9 @@ export interface Database {
       }
     }
     Enums: {
-      relance_tone: 'courtois' | 'ferme' | 'humoristique'
+      relance_tone: 'courtois' | 'ferme' | 'humoristique',
+      closing_task_freq: 'monthly' | 'annual',
+      closing_task_status: 'todo' | 'in_progress' | 'done' | 'blocked'
     }
   }
 }
