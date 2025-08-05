@@ -16,6 +16,8 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import { useFeatureFlag } from '../../lib/hooks/useFeatureFlag';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -23,6 +25,10 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle }) => {
+  const { enabled: cfoEnabled } = useFeatureFlag('cfoDashboardV1');
+  const { user } = useAuthContext();
+  const role = (user?.user_metadata as any)?.role;
+
   const navItems = [
     { name: 'Mon Entreprise', icon: <Home size={20} />, path: '/' },
     { name: 'Clôture & Pilotage', icon: <CalendarClock size={20} />, path: '/closing' },
@@ -37,6 +43,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle }) => {
     { name: 'Mon Expert', icon: <UserCog size={20} />, path: '/expert' },
     { name: 'Centre de Connaissances', icon: <BookOpen size={20} />, path: '/knowledge' }
   ];
+
+  if (cfoEnabled && (role === 'cfo' || role === 'admin')) {
+    navItems.push({ name: 'Dashboard prédictif', icon: <BarChart3 size={20} />, path: '/cfo/dashboard' });
+  }
 
   return (
     <aside className={`sidebar ${isOpen ? 'translate-x-0' : '-translate-x-64 md:translate-x-0'}`}>

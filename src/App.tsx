@@ -28,12 +28,23 @@ import KpiQrPage from './pages/admin/kpi-qr';
 import { useFeatureFlag } from './lib/hooks/useFeatureFlag';
 import { Navigate } from 'react-router-dom';
 import './styles/globals.css';
+import CfoDashboard from './pages/CfoDashboard';
+import { useAuthContext } from './contexts/AuthContext';
 
 const QrUploadRoute: React.FC = () => {
   const { enabled, loading } = useFeatureFlag('onboardingQR');
   if (loading) return <p>Chargement...</p>;
   if (!enabled) return <Navigate to="/onboarding/tax" />;
   return <QrUploadPage />;
+};
+
+const CfoDashboardRoute: React.FC = () => {
+  const { enabled, loading } = useFeatureFlag('cfoDashboardV1');
+  const { user, loading: authLoading } = useAuthContext();
+  const role = (user?.user_metadata as any)?.role;
+  if (loading || authLoading) return <p>Chargement...</p>;
+  if (!enabled || (role !== 'cfo' && role !== 'admin')) return <Navigate to="/" />;
+  return <CfoDashboard />;
 };
 
 const App: React.FC = () => (
@@ -76,6 +87,7 @@ const App: React.FC = () => (
             <Route path="/qr-upload/:sessionToken" element={<QrUploadRoute />} />
             <Route path="/admin/feature-flags" element={<Layout><FeatureFlagsPage /></Layout>} />
             <Route path="/admin/kpi-qr" element={<Layout><KpiQrPage /></Layout>} />
+            <Route path="/cfo/dashboard" element={<Layout><CfoDashboardRoute /></Layout>} />
           </Routes>
         </AuthProvider>
       </ToastProvider>
