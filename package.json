@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "train:reco": "node scripts/train-reco-model.js"
+    "train:reco": "node scripts/train-reco-model.js",
+    "train:cash": "docker build -t ml-cash-trainer ml-cash-trainer && docker run --rm -v $(pwd)/ml-cash-trainer/models:/app/models ml-cash-trainer"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
