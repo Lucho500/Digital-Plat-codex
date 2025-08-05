@@ -1,0 +1,5 @@
+Generate a follow-up message for the following invoice.
+
+invoice: {{invoice}}
+tone: {{tone}}
+styleGuide: "1 paragraphe, 120 mots max, CTA paiement"
