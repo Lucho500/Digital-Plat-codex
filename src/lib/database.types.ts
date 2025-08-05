@@ -622,6 +622,38 @@ export interface Database {
           is_booked?: boolean
         }
       }
+      ,ai_entry_queue: {
+        Row: {
+          id: string
+          suggestion: Json
+          confidence: number
+          amount: number
+          status: 'queued' | 'auto_posted' | 'needs_review' | 'rejected'
+          posted_at: string | null
+          reviewed_by: string | null
+          reviewed_at: string | null
+        }
+        Insert: {
+          id?: string
+          suggestion: Json
+          confidence: number
+          amount: number
+          status?: 'queued' | 'auto_posted' | 'needs_review' | 'rejected'
+          posted_at?: string | null
+          reviewed_by?: string | null
+          reviewed_at?: string | null
+        }
+        Update: {
+          id?: string
+          suggestion?: Json
+          confidence?: number
+          amount?: number
+          status?: 'queued' | 'auto_posted' | 'needs_review' | 'rejected'
+          posted_at?: string | null
+          reviewed_by?: string | null
+          reviewed_at?: string | null
+        }
+      }
     }
   }
 }
