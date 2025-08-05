@@ -1,0 +1,11 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text>Votre trésorerie passera sous deux mois de couverture le {{month}} avec un minimum de {{minCash}}€.</mj-text>
+        <mj-text>Actions suggérées : factoring, prêt court terme, relance clients.</mj-text>
+        <mj-button href="https://app.example.com/finance">Voir les options</mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
