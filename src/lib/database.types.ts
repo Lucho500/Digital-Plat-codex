@@ -622,6 +622,35 @@ export interface Database {
           is_booked?: boolean
         }
       }
+      ,relance_profiles: {
+        Row: {
+          id: string
+          name: string
+          tone: Database['public']['Enums']['relance_tone']
+          min_days_late: number
+          max_days_late: number
+          payment_score_min: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          tone: Database['public']['Enums']['relance_tone']
+          min_days_late?: number
+          max_days_late?: number
+          payment_score_min?: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          tone?: Database['public']['Enums']['relance_tone']
+          min_days_late?: number
+          max_days_late?: number
+          payment_score_min?: number
+        }
+      }
+    }
+    Enums: {
+      relance_tone: 'courtois' | 'ferme' | 'humoristique'
     }
   }
 }
