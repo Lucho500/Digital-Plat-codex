@@ -1,0 +1,31 @@
+-- CLP-106 Add Dossier Annexe tasks and remove bank reconciliation
+DELETE FROM closing_task_templates WHERE code='M-CASH-002';
+
+INSERT INTO closing_task_templates (id,code,label,section,freq,legal_ref,default_due) VALUES
+  (gen_random_uuid(),'A-DOS-001','Décomptes TVA et réconciliation annuelle','Dossier Annexe','annual','TVA 8,1 %',30),
+  (gen_random_uuid(),'B-DOS-002','Réconciliation des salaires et charges sociales','Dossier Annexe','annual','AVS/LPP',30),
+  (gen_random_uuid(),'C-DOS-003','Trésorerie - confirmations banques & caisse','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'D-DOS-004','Créances résultant de la vente de biens et prestations','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'E-DOS-005','Autres créances à court terme','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'F-DOS-006','Stocks & prestations non facturées','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'F1-DOS-007','Stocks & travaux en cours','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'G-DOS-008','Actifs de régularisation','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'H-DOS-009','Immobilisations financières','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'I-DOS-010','Participations','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'J-DOS-011','Créances/dettes envers détenteurs de participations','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'J1-DOS-012','Créances/dettes envers détenteurs de parts','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'J2-DOS-013','Créances/dettes envers sociétés du groupe','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'K-DOS-014','Immobilisations corporelles','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'L-DOS-015','Immobilisations incorporelles','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'M-DOS-016','Dettes résultant de l''achat de biens & prestations','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'N-DOS-017','Dettes CT portant intérêts','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'O-DOS-018','Autres dettes à court terme','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'P-DOS-019','Passifs de régularisation & provisions CT','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'Q-DOS-020','Dettes LT portant intérêts','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'R-DOS-021','Autres dettes à long terme','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'S-DOS-022','Provisions CT & LT','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'T-DOS-023','Capitaux propres','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'V-DOS-024','Charges & produits extraordinaires / antérieurs','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'W-DOS-025','Analyse du compte d''exploitation','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'X-DOS-026','Part privée véhicule & prestations à soi-même','Dossier Annexe','annual',NULL,30),
+  (gen_random_uuid(),'Z-DOS-027','Informations pour l''annexe du bilan','Dossier Annexe','annual',NULL,30);
