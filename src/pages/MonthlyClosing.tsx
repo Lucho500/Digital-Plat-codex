@@ -40,10 +40,12 @@ const MonthlyClosing: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { addToast } = useToast();
 
-  const { data: fetchedTasks, isLoading, error, mutate } = useClosingTasks('demo', '2023-06');
-  
+  const accountId = 'demo';
+  const period = '2023-06';
+  const { data: tasks, isLoading, error, mutate } = useClosingTasks(accountId, period);
+
   // Sample tasks for the monthly closing checklist
-  const [tasks, setTasks] = useState<Task[]>([
+  const [taskList, setTaskList] = useState<Task[]>([
     {
       id: 'invoices',
       title: 'Factures clients',
@@ -86,10 +88,10 @@ const MonthlyClosing: React.FC = () => {
   ]);
 
   useEffect(() => {
-    if (fetchedTasks) {
-      setTasks(fetchedTasks as Task[]);
+    if (tasks) {
+      setTaskList(tasks as Task[]);
     }
-  }, [fetchedTasks]);
+  }, [tasks]);
 
   if (isLoading) {
     return (
@@ -109,7 +111,7 @@ const MonthlyClosing: React.FC = () => {
   }
 
   const updateTaskStatus = (taskId: string, newStatus: Task['status']) => {
-    setTasks(tasks.map(task =>
+    setTaskList(taskList.map(task =>
       task.id === taskId ? { ...task, status: newStatus } : task
     ));
     addToast('Statut de la tâche mis à jour', 'success');
@@ -222,7 +224,7 @@ const MonthlyClosing: React.FC = () => {
             </p>
             
             <div className="space-y-4">
-              {tasks.map((task) => (
+              {taskList.map((task) => (
                 <div 
                   key={task.id}
                   className={`border rounded-lg p-4 ${
@@ -300,7 +302,7 @@ const MonthlyClosing: React.FC = () => {
               icon={loading ? <Loader size={16} className="animate-spin" /> : <ChevronRight size={16} />}
               iconPosition="right"
               onClick={handleNextStep}
-              disabled={loading || tasks.some(task => task.status === 'missing')}
+              disabled={loading || taskList.some(task => task.status === 'missing')}
             >
               {loading ? 'Traitement en cours...' : 'Continuer'}
             </Button>
