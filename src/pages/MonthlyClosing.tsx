@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
 import { useClosingTasks } from '../lib/hooks/useClosingTasks';
+import { updateClosingTaskStatus } from '../lib/api/closing';
 
 // Define the steps for the monthly closing process
 const closingSteps = [
@@ -91,11 +92,16 @@ const MonthlyClosing: React.FC = () => {
     }
   }, [fetchedTasks]);
 
-  const updateTaskStatus = (taskId: string, newStatus: Task['status']) => {
-    setTasks(tasks.map(task =>
-      task.id === taskId ? { ...task, status: newStatus } : task
-    ));
-    addToast('Statut de la tâche mis à jour', 'success');
+  const updateTaskStatus = async (taskId: string, newStatus: Task['status']) => {
+    try {
+      await updateClosingTaskStatus(taskId, newStatus);
+      setTasks(tasks.map(task =>
+        task.id === taskId ? { ...task, status: newStatus } : task
+      ));
+      addToast('Statut de la tâche mis à jour', 'success');
+    } catch (error) {
+      addToast("Erreur lors de la mise à jour du statut de la tâche", 'error');
+    }
   };
 
   const getTaskStatusIcon = (status: Task['status']) => {
