@@ -9,11 +9,13 @@ interface ClosingTask {
 }
 
 export function useClosingTasks(accountId: string, period: string) {
-  return useSWR<ClosingTask[]>(
+  const { data, error, isLoading, mutate } = useSWR<ClosingTask[]>(
     `/api/closing/tasks?accountId=${accountId}&period=${period}`,
     () =>
       fetch(`/api/closing/tasks?accountId=${accountId}&period=${period}`)
         .then((r) => r.json()),
   );
+
+  return { data, error, isLoading, mutate } as const;
 }
 

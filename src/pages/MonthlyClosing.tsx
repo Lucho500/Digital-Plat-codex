@@ -40,7 +40,7 @@ const MonthlyClosing: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { addToast } = useToast();
 
-  const { data: fetchedTasks } = useClosingTasks('demo', '2023-06');
+  const { data: fetchedTasks, isLoading, error, mutate } = useClosingTasks('demo', '2023-06');
   
   // Sample tasks for the monthly closing checklist
   const [tasks, setTasks] = useState<Task[]>([
@@ -90,6 +90,23 @@ const MonthlyClosing: React.FC = () => {
       setTasks(fetchedTasks as Task[]);
     }
   }, [fetchedTasks]);
+
+  if (isLoading) {
+    return (
+      <div className="animate-slide-in-up flex justify-center py-8">
+        <Loader className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="animate-slide-in-up text-center py-8">
+        <p className="text-error mb-4">Erreur lors du chargement des tâches.</p>
+        <Button variant="primary" onClick={() => mutate()}>Réessayer</Button>
+      </div>
+    );
+  }
 
   const updateTaskStatus = (taskId: string, newStatus: Task['status']) => {
     setTasks(tasks.map(task =>
