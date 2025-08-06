@@ -109,7 +109,10 @@ const InvoiceTable: React.FC = () => {
                       {(invoice.total ?? 0).toLocaleString()} €
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                      <button className="text-gray-400 hover:text-gray-500">
+                      <button
+                        className="text-gray-400 hover:text-gray-500"
+                        aria-label="Afficher les options"
+                      >
                         <MoreVertical size={16} />
                       </button>
                     </td>

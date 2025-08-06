@@ -96,10 +96,20 @@ const Documents: React.FC = () => {
       header: 'Actions',
       accessor: (row: any) => (
         <div className="flex justify-end space-x-2">
-          <Button variant="text" size="sm" icon={<Download size={16} />} />
+          <Button
+            variant="text"
+            size="sm"
+            icon={<Download size={16} />}
+            ariaLabel="Télécharger"
+          />
           <Dropdown
             trigger={
-              <Button variant="text" size="sm" icon={<MoreVertical size={16} />} />
+              <Button
+                variant="text"
+                size="sm"
+                icon={<MoreVertical size={16} />}
+                ariaLabel="Options"
+              />
             }
             items={[
               { label: 'Télécharger', value: 'download', icon: <Download size={16} /> },

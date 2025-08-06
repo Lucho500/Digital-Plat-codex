@@ -214,13 +214,22 @@ const Closing: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                     <div className="flex items-center justify-end space-x-2">
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        aria-label="Voir le rapport"
+                      >
                         <FileText size={16} />
                       </button>
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        aria-label="Télécharger le rapport"
+                      >
                         <Download size={16} />
                       </button>
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        aria-label="Voir l'analyse"
+                      >
                         <BarChart size={16} />
                       </button>
                     </div>
@@ -247,13 +256,22 @@ const Closing: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                     <div className="flex items-center justify-end space-x-2">
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        aria-label="Voir le rapport"
+                      >
                         <FileText size={16} />
                       </button>
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        aria-label="Télécharger le rapport"
+                      >
                         <Download size={16} />
                       </button>
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        aria-label="Voir l'analyse"
+                      >
                         <BarChart size={16} />
                       </button>
                     </div>

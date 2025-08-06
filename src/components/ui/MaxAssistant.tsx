@@ -132,6 +132,7 @@ const MaxAssistant: React.FC = () => {
           ref={openButtonRef}
           onClick={() => setIsOpen(true)}
           className="fixed bottom-6 right-6 bg-primary text-white rounded-full p-4 shadow-lg hover:bg-primary-light transition-all duration-300 z-50 group animate-bounce hover:animate-none"
+          aria-label="Ouvrir l'assistant Max"
         >
           <div className="absolute -top-2 -right-2 w-4 h-4 bg-accent rounded-full animate-ping"></div>
           <div className="absolute -top-2 -right-2 w-4 h-4 bg-accent rounded-full"></div>
@@ -170,12 +171,14 @@ const MaxAssistant: React.FC = () => {
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className="p-2 hover:bg-white/10 rounded-full transition-colors"
+              aria-label={isExpanded ? 'Réduire la fenêtre' : 'Agrandir la fenêtre'}
             >
               {isExpanded ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
             </button>
             <button
               onClick={() => setIsOpen(false)}
               className="p-2 hover:bg-white/10 rounded-full transition-colors"
+              aria-label="Fermer l'assistant"
             >
               <X size={20} />
             </button>

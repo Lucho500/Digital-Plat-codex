@@ -181,6 +181,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 <button
                   className="ml-2 text-gray-400 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   onClick={() => handleFilterChange(key, null)}
+                  aria-label="Retirer le filtre"
                 >
                   <X size={14} />
                 </button>

@@ -29,6 +29,7 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({
               className={`progress-step-number ${
                 currentStep === step.id ? 'active' : ''
               } ${step.completed ? 'completed' : ''}`}
+              aria-label={`Étape ${index + 1} : ${step.label}`}
             >
               {step.completed ? (
                 <Check size={16} />
