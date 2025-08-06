@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { 
-  Clock, 
-  Check, 
-  AlertTriangle, 
-  FileText, 
+import {
+  Clock,
+  AlertTriangle,
+  FileText,
   ChevronRight,
   Calendar,
   CheckCircle,
@@ -14,9 +13,18 @@ import {
   Download,
   BarChart
 } from 'lucide-react';
+import {
+  getMonthlyClosings,
+  MonthlyClosing,
+} from '../lib/api/closing';
 
 const Closing: React.FC = () => {
   const navigate = useNavigate();
+  const [monthlyClosings, setMonthlyClosings] = useState<MonthlyClosing[]>([]);
+
+  useEffect(() => {
+    getMonthlyClosings().then(setMonthlyClosings);
+  }, []);
 
   return (
     <div className="animate-slide-in-up">
@@ -65,132 +73,93 @@ const Closing: React.FC = () => {
         <h3 className="text-lg font-medium text-gray-900 mb-4">Clôtures mensuelles</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card
-            onClick={() => navigate('/closing/monthly')}
-            className="cursor-pointer"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <Calendar size={20} className="text-primary mr-2" />
-                <h4 className="font-medium text-gray-900">Juin 2023</h4>
-              </div>
-              <span className="badge badge-warning">En cours</span>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Factures clients</span>
-                <span className="flex items-center text-success">
-                  <CheckCircle size={14} className="mr-1" />
-                  Complet
+          {monthlyClosings.map((closing) => (
+            <Card
+              key={`${closing.month}-${closing.year}`}
+              onClick={
+                closing.status === 'ongoing'
+                  ? () => navigate('/closing/monthly')
+                  : undefined
+              }
+              className={closing.status === 'ongoing' ? 'cursor-pointer' : ''}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <Calendar size={20} className="text-primary mr-2" />
+                  <h4 className="font-medium text-gray-900">
+                    {closing.month} {closing.year}
+                  </h4>
+                </div>
+                <span
+                  className={`badge ${
+                    closing.status === 'ongoing'
+                      ? 'badge-warning'
+                      : 'badge-success'
+                  }`}
+                >
+                  {closing.status === 'ongoing' ? 'En cours' : 'Finalisé'}
                 </span>
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Factures fournisseurs</span>
-                <span className="flex items-center text-warning">
-                  <AlertTriangle size={14} className="mr-1" />
-                  À vérifier
-                </span>
+              <div className="space-y-2">
+                {closing.status === 'ongoing' &&
+                  closing.tasks?.map((task) => (
+                    <div
+                      key={task.label}
+                      className="flex items-center justify-between text-sm"
+                    >
+                      <span className="text-gray-500">{task.label}</span>
+                      {task.status === 'complete' && (
+                        <span className="flex items-center text-success">
+                          <CheckCircle size={14} className="mr-1" /> Complet
+                        </span>
+                      )}
+                      {task.status === 'warning' && (
+                        <span className="flex items-center text-warning">
+                          <AlertTriangle size={14} className="mr-1" /> À vérifier
+                        </span>
+                      )}
+                      {task.status === 'pending' && (
+                        <span className="flex items-center text-gray-400">
+                          <Clock size={14} className="mr-1" /> En attente
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                {closing.status === 'completed' &&
+                  closing.metrics?.map((metric) => (
+                    <div
+                      key={metric.label}
+                      className="flex items-center justify-between text-sm"
+                    >
+                      <span className="text-gray-500">{metric.label}</span>
+                      <span className="font-medium">{metric.value}</span>
+                    </div>
+                  ))}
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Rapprochement bancaire</span>
-                <span className="flex items-center text-gray-400">
-                  <Clock size={14} className="mr-1" />
-                  En attente
-                </span>
-              </div>
-            </div>
-            <div className="mt-4 pt-3 border-t border-gray-100">
-              <Button 
-                variant="text" 
-                size="sm" 
-                icon={<ChevronRight size={16} />} 
-                iconPosition="right"
-                fullWidth
-              >
-                Continuer la clôture
-              </Button>
-            </div>
-          </Card>
-
-          <Card>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <Calendar size={20} className="text-primary mr-2" />
-                <h4 className="font-medium text-gray-900">Mai 2023</h4>
-              </div>
-              <span className="badge badge-success">Finalisé</span>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Chiffre d'affaires</span>
-                <span className="font-medium">25 680 €</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Résultat</span>
-                <span className="font-medium">3 450 €</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Trésorerie</span>
-                <span className="font-medium">42 970 €</span>
-              </div>
-            </div>
-            <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between">
-              <Button 
-                variant="text" 
-                size="sm" 
-                icon={<FileText size={16} />}
-              >
-                Voir le rapport
-              </Button>
-              <Button 
-                variant="text" 
-                size="sm" 
-                icon={<Download size={16} />}
-              >
-                Exporter
-              </Button>
-            </div>
-          </Card>
-
-          <Card>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <Calendar size={20} className="text-primary mr-2" />
-                <h4 className="font-medium text-gray-900">Avril 2023</h4>
-              </div>
-              <span className="badge badge-success">Finalisé</span>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Chiffre d'affaires</span>
-                <span className="font-medium">22 340 €</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Résultat</span>
-                <span className="font-medium">2 980 €</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Trésorerie</span>
-                <span className="font-medium">38 750 €</span>
-              </div>
-            </div>
-            <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between">
-              <Button 
-                variant="text" 
-                size="sm" 
-                icon={<FileText size={16} />}
-              >
-                Voir le rapport
-              </Button>
-              <Button 
-                variant="text" 
-                size="sm" 
-                icon={<Download size={16} />}
-              >
-                Exporter
-              </Button>
-            </div>
-          </Card>
+              {closing.status === 'ongoing' ? (
+                <div className="mt-4 pt-3 border-t border-gray-100">
+                  <Button
+                    variant="text"
+                    size="sm"
+                    icon={<ChevronRight size={16} />}
+                    iconPosition="right"
+                    fullWidth
+                  >
+                    Continuer la clôture
+                  </Button>
+                </div>
+              ) : (
+                <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between">
+                  <Button variant="text" size="sm" icon={<FileText size={16} />}>
+                    Voir le rapport
+                  </Button>
+                  <Button variant="text" size="sm" icon={<Download size={16} />}>
+                    Exporter
+                  </Button>
+                </div>
+              )}
+            </Card>
+          ))}
         </div>
       </div>
 
