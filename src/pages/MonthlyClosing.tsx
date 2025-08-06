@@ -18,13 +18,6 @@ import {
 import { useToast } from '../contexts/ToastContext';
 import { useClosingTasks } from '../lib/hooks/useClosingTasks';
 
-// Define the steps for the monthly closing process
-const closingSteps = [
-  { id: 1, label: 'Vérification', completed: true },
-  { id: 2, label: 'Validation', completed: false },
-  { id: 3, label: 'Finalisation', completed: false }
-];
-
 // Define task types for the checklist
 interface Task {
   id: string;
@@ -41,6 +34,12 @@ const MonthlyClosing: React.FC = () => {
   const { addToast } = useToast();
 
   const { data: fetchedTasks } = useClosingTasks('demo', '2023-06');
+
+  const [steps, setSteps] = useState([
+    { id: 1, label: 'Vérification', completed: true },
+    { id: 2, label: 'Validation', completed: false },
+    { id: 3, label: 'Finalisation', completed: false }
+  ]);
   
   // Sample tasks for the monthly closing checklist
   const [tasks, setTasks] = useState<Task[]>([
@@ -134,13 +133,12 @@ const MonthlyClosing: React.FC = () => {
       setTimeout(() => {
         setLoading(false);
         setCurrentStep(currentStep + 1);
-        
-        // Mark the current step as completed
-        const updatedSteps = closingSteps.map(step => 
-          step.id === currentStep ? { ...step, completed: true } : step
+
+        setSteps(prevSteps =>
+          prevSteps.map(step =>
+            step.id === currentStep ? { ...step, completed: true } : step
+          )
         );
-        
-        // Update steps (in a real app, you would dispatch this to your state management)
       }, 1500);
     } else {
       // Final step - redirect to dashboard with success message
@@ -181,8 +179,8 @@ const MonthlyClosing: React.FC = () => {
         </div>
         
         {/* Progress Steps */}
-        <ProgressSteps 
-          steps={closingSteps} 
+        <ProgressSteps
+          steps={steps}
           currentStep={currentStep}
           onChange={(step) => step < currentStep && setCurrentStep(step)}
         />
