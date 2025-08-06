@@ -18,6 +18,30 @@ import {
 const Closing: React.FC = () => {
   const navigate = useNavigate();
 
+  const handleNavigate = (path: string) => {
+    try {
+      navigate(path);
+    } catch (error) {
+      alert('Navigation échouée');
+    }
+  };
+
+  const handleExport = (label: string) => {
+    try {
+      alert(`Export du rapport ${label}`);
+    } catch (error) {
+      alert("Erreur lors de l'export");
+    }
+  };
+
+  const handleAnalysis = (label: string) => {
+    try {
+      alert(`Analyse ${label} à venir`);
+    } catch (error) {
+      alert("Erreur lors de l'analyse");
+    }
+  };
+
   return (
     <div className="animate-slide-in-up">
       <div className="mb-6">
@@ -100,12 +124,13 @@ const Closing: React.FC = () => {
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-gray-100">
-              <Button 
-                variant="text" 
-                size="sm" 
-                icon={<ChevronRight size={16} />} 
+              <Button
+                variant="text"
+                size="sm"
+                icon={<ChevronRight size={16} />}
                 iconPosition="right"
                 fullWidth
+                onClick={() => handleNavigate('/closing/monthly')}
               >
                 Continuer la clôture
               </Button>
@@ -135,17 +160,19 @@ const Closing: React.FC = () => {
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between">
-              <Button 
-                variant="text" 
-                size="sm" 
+              <Button
+                variant="text"
+                size="sm"
                 icon={<FileText size={16} />}
+                onClick={() => handleNavigate('/reports/2023-05')}
               >
                 Voir le rapport
               </Button>
-              <Button 
-                variant="text" 
-                size="sm" 
+              <Button
+                variant="text"
+                size="sm"
                 icon={<Download size={16} />}
+                onClick={() => handleExport('Mai 2023')}
               >
                 Exporter
               </Button>
@@ -175,17 +202,19 @@ const Closing: React.FC = () => {
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between">
-              <Button 
-                variant="text" 
-                size="sm" 
+              <Button
+                variant="text"
+                size="sm"
                 icon={<FileText size={16} />}
+                onClick={() => handleNavigate('/reports/2023-04')}
               >
                 Voir le rapport
               </Button>
-              <Button 
-                variant="text" 
-                size="sm" 
+              <Button
+                variant="text"
+                size="sm"
                 icon={<Download size={16} />}
+                onClick={() => handleExport('Avril 2023')}
               >
                 Exporter
               </Button>
@@ -245,13 +274,22 @@ const Closing: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                     <div className="flex items-center justify-end space-x-2">
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        onClick={() => handleNavigate('/reports/2022')}
+                      >
                         <FileText size={16} />
                       </button>
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        onClick={() => handleExport('2022')}
+                      >
                         <Download size={16} />
                       </button>
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        onClick={() => handleAnalysis('2022')}
+                      >
                         <BarChart size={16} />
                       </button>
                     </div>
@@ -278,13 +316,22 @@ const Closing: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                     <div className="flex items-center justify-end space-x-2">
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        onClick={() => handleNavigate('/reports/2021')}
+                      >
                         <FileText size={16} />
                       </button>
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        onClick={() => handleExport('2021')}
+                      >
                         <Download size={16} />
                       </button>
-                      <button className="text-primary hover:text-primary-light">
+                      <button
+                        className="text-primary hover:text-primary-light"
+                        onClick={() => handleAnalysis('2021')}
+                      >
                         <BarChart size={16} />
                       </button>
                     </div>
@@ -300,7 +347,13 @@ const Closing: React.FC = () => {
       <div>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium text-gray-900">Rapports et analyses</h3>
-          <Button variant="text" size="sm" icon={<ArrowRight size={16} />} iconPosition="right">
+          <Button
+            variant="text"
+            size="sm"
+            icon={<ArrowRight size={16} />}
+            iconPosition="right"
+            onClick={() => handleNavigate('/reports')}
+          >
             Voir tous les rapports
           </Button>
         </div>
@@ -312,7 +365,12 @@ const Closing: React.FC = () => {
             </div>
             <h4 className="font-medium">Bilan</h4>
             <p className="text-sm text-gray-500 mt-1">Situation patrimoniale</p>
-            <Button variant="text" size="sm" className="mt-3">
+            <Button
+              variant="text"
+              size="sm"
+              className="mt-3"
+              onClick={() => handleNavigate('/reports/bilan')}
+            >
               Consulter
             </Button>
           </Card>
@@ -323,7 +381,12 @@ const Closing: React.FC = () => {
             </div>
             <h4 className="font-medium">Compte de résultat</h4>
             <p className="text-sm text-gray-500 mt-1">Performance financière</p>
-            <Button variant="text" size="sm" className="mt-3">
+            <Button
+              variant="text"
+              size="sm"
+              className="mt-3"
+              onClick={() => handleNavigate('/reports/compte-resultat')}
+            >
               Consulter
             </Button>
           </Card>
@@ -334,7 +397,12 @@ const Closing: React.FC = () => {
             </div>
             <h4 className="font-medium">Trésorerie</h4>
             <p className="text-sm text-gray-500 mt-1">Flux financiers</p>
-            <Button variant="text" size="sm" className="mt-3">
+            <Button
+              variant="text"
+              size="sm"
+              className="mt-3"
+              onClick={() => handleNavigate('/reports/tresorerie')}
+            >
               Consulter
             </Button>
           </Card>
@@ -345,7 +413,12 @@ const Closing: React.FC = () => {
             </div>
             <h4 className="font-medium">Analyse fiscale</h4>
             <p className="text-sm text-gray-500 mt-1">Optimisation fiscale</p>
-            <Button variant="text" size="sm" className="mt-3">
+            <Button
+              variant="text"
+              size="sm"
+              className="mt-3"
+              onClick={() => handleNavigate('/reports/analyse-fiscale')}
+            >
               Consulter
             </Button>
           </Card>
