@@ -236,7 +236,10 @@ const SalaryManagement: React.FC = () => {
                         {employee.salary.toLocaleString()} €
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button className="text-primary hover:text-primary-light mr-3">
+                        <button
+                          className="text-primary hover:text-primary-light mr-3"
+                          aria-label="Modifier le salarié"
+                        >
                           <Edit size={16} />
                         </button>
                       </td>

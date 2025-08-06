@@ -173,7 +173,10 @@ const Suppliers: React.FC = () => {
                     1 250 €
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                    <button className="text-gray-400 hover:text-gray-500">
+                    <button
+                      className="text-gray-400 hover:text-gray-500"
+                      aria-label="Afficher les options"
+                    >
                       <MoreVertical size={16} />
                     </button>
                   </td>
@@ -203,7 +206,10 @@ const Suppliers: React.FC = () => {
                     3 780 €
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                    <button className="text-gray-400 hover:text-gray-500">
+                    <button
+                      className="text-gray-400 hover:text-gray-500"
+                      aria-label="Afficher les options"
+                    >
                       <MoreVertical size={16} />
                     </button>
                   </td>
@@ -233,7 +239,10 @@ const Suppliers: React.FC = () => {
                     2 450 €
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                    <button className="text-gray-400 hover:text-gray-500">
+                    <button
+                      className="text-gray-400 hover:text-gray-500"
+                      aria-label="Afficher les options"
+                    >
                       <MoreVertical size={16} />
                     </button>
                   </td>

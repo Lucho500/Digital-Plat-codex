@@ -114,8 +114,18 @@ const Assets: React.FC = () => {
       header: 'Actions',
       accessor: (row: any) => (
         <div className="flex justify-end space-x-2">
-          <Button variant="text" size="sm" icon={<Edit size={16} />} />
-          <Button variant="text" size="sm" icon={<Trash2 size={16} />} />
+          <Button
+            variant="text"
+            size="sm"
+            icon={<Edit size={16} />}
+            ariaLabel="Modifier l'actif"
+          />
+          <Button
+            variant="text"
+            size="sm"
+            icon={<Trash2 size={16} />}
+            ariaLabel="Supprimer l'actif"
+          />
         </div>
       ),
       align: 'right'
